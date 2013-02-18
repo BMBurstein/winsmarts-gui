@@ -46,19 +46,39 @@ namespace Logger
 				case "DT":
 					handleDeclareTask(parts);
 					break;
+				case "CS":
+					handleContextSwitch(parts);
+					break;
 				default:
 					break;
 			}
 		}
 
+		List<string[]> CSHistory = new List<string[]>();
+		private void handleContextSwitch(string[] parts)
+		{
+			ganttChart.addSlice(uint.Parse(parts[2]));
+		}
+
 		List<Task> tasks = new List<Task>();
 		private void handleDeclareTask(string[] parts)
 		{
-			Task task = new Task() { tid = uint.Parse(parts[2]), name = parts[3], priority = uint.Parse(parts[4]) };
+			Task task = new Task() { tid = uint.Parse(parts[2]), name = parts[3], priority = uint.Parse(parts[4]), state = TaskStates.READY };
 			tasks.Add(task);
 			ListViewItem item = new ListViewItem(parts.Skip(2).ToArray());
+			item.SubItems.Add("Ready");
 			lsvTasks.Items.Add(item);
+			ganttChart.addTask(task.tid, task.name);
 		}
+	}
+
+	public enum TaskStates
+	{
+		READY,
+		NOT_ACTIVE,
+		SUSPENDED,
+		SLEEPING,
+		UNKNOWN
 	}
 
 	public class Task
@@ -66,6 +86,6 @@ namespace Logger
 		public uint priority { get; set; }
 		public string name { get; set; }
 		public uint tid { get; set; }
-
+		public TaskStates state { get; set; }
 	}
 }
