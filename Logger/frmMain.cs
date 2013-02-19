@@ -20,7 +20,13 @@ namespace Logger
 			InitializeComponent();
 		}
 
-		private void ReceiveCallback(IAsyncResult ar)
+        private void reset()
+        {
+            tasks.Clear();
+            ganttChart.reset();
+        }
+        
+        private void ReceiveCallback(IAsyncResult ar)
 		{
 			IPEndPoint ipep = null;
 			var rcv = udpc.EndReceive(ar, ref ipep);
@@ -43,10 +49,13 @@ namespace Logger
 
 			switch (parts[0])
 			{
-				case "DT":
+                case "Start":
+                    reset();
+                    break;
+                case "DeclareTask":
 					handleDeclareTask(parts);
 					break;
-				case "CS":
+                case "ContextSwitch":
 					handleContextSwitch(parts);
 					break;
 				default:
@@ -70,7 +79,8 @@ namespace Logger
 			lsvTasks.Items.Add(item);
 			ganttChart.addTask(task.tid, task.name);
 		}
-	}
+
+    }
 
 	public enum TaskStates
 	{
