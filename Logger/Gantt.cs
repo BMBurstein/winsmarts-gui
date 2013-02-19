@@ -16,7 +16,14 @@ namespace Logger
 		private SortedList<uint, int> indexes = new SortedList<uint, int>();
 		private uint sliceCount = 0;
 
-		public void addTask(uint index, string name)
+        public void reset()
+        {
+            //spans.Clear(); 
+            names.Clear();
+            indexes.Clear();
+        }
+		
+        public void addTask(uint index, string name)
 		{
 			names.Add(name);
 			indexes.Add(index, names.Count - 1);
