@@ -14,11 +14,12 @@ namespace Logger
     public partial class frmMain : Form
     {
         UdpClient udpc = new UdpClient(44557);
+        int cycles = -1;
 
         public frmMain()
         {
             InitializeComponent();
-            this.tabViews.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabViews.Dock = DockStyle.Bottom;
             this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
         }
 
@@ -27,6 +28,7 @@ namespace Logger
             tasks.Clear();
             //lsvTasks.Items.Clear();
             ganttChart.reset();
+            cycles++;
         }
 
         private void ReceiveCallback(IAsyncResult ar)
@@ -61,6 +63,10 @@ namespace Logger
                 case "ContextSwitch":
                     handleContextSwitch(parts);
                     break;
+                case "StatusChanged":
+                    handleStatusChanged(parts);
+                    break;
+                    
                 default:
                     break;
             }
@@ -78,9 +84,27 @@ namespace Logger
             Task task = new Task() { tid = uint.Parse(parts[2]), name = parts[3], priority = uint.Parse(parts[4]), state = TaskStates.READY };
             tasks.Add(task);
             ListViewItem item = new ListViewItem(parts.Skip(2).ToArray());
+            if (item.SubItems[2].Text == uint.MaxValue.ToString())
+                item.SubItems[2].Text = "MAX_INT";
             item.SubItems.Add("Ready");
             lsvTasks.Items.Add(item);
             ganttChart.addTask(task.tid, task.name);
+        }
+
+        private void handleStatusChanged(string[] parts)
+        {
+            int jump = 0;
+            foreach (ListViewItem item in lsvTasks.Items)
+            {
+                if (item.SubItems[0].Text == parts[2])
+                {
+                    if (cycles == jump++)
+                    {
+                        item.SubItems[3].Text = parts[3];
+                        break;
+                    }
+                }
+            }
         }
 
         private void Show_tabs_CheckedChanged(object sender, EventArgs e)
@@ -89,11 +113,11 @@ namespace Logger
             {
                 this.tabPage1.Controls.Add(this.lsvTasks);
                 this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y - 20);
-                this.lsvTasks.Dock = System.Windows.Forms.DockStyle.Fill;
+                this.lsvTasks.Dock = DockStyle.Fill;
 
                 this.tabPage2.Controls.Add(this.ganttChart);
                 this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y - 20);
-                this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
+                this.ganttChart.Dock = DockStyle.Fill;
 
                 tabViews.Visible = true;
             }
@@ -102,12 +126,12 @@ namespace Logger
                 this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
 
                 this.Controls.Add(this.lsvTasks);
-                this.lsvTasks.Dock = System.Windows.Forms.DockStyle.None;
+                this.lsvTasks.Dock = DockStyle.None;
                 this.lsvTasks.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height - 60);
                 this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y + 20);
 
                 this.Controls.Add(this.ganttChart);
-                this.ganttChart.Dock = System.Windows.Forms.DockStyle.None;
+                this.ganttChart.Dock = DockStyle.None;
                 this.ganttChart.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height - 60);
                 this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y + 20);
 
