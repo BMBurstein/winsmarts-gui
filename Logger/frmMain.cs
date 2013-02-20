@@ -18,11 +18,14 @@ namespace Logger
 		public frmMain()
 		{
 			InitializeComponent();
+            this.tabViews.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
 		}
 
         private void reset()
         {
             tasks.Clear();
+            //lsvTasks.Items.Clear();
             ganttChart.reset();
         }
         
@@ -79,6 +82,38 @@ namespace Logger
 			lsvTasks.Items.Add(item);
 			ganttChart.addTask(task.tid, task.name);
 		}
+
+        private void Show_tabs_CheckedChanged(object sender, EventArgs e)
+       {
+           if (Show_tabs.Checked)
+           {
+               this.tabPage1.Controls.Add(this.lsvTasks);
+               this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y - 20);
+               this.lsvTasks.Dock = System.Windows.Forms.DockStyle.Fill;
+
+               this.tabPage2.Controls.Add(this.ganttChart);
+               this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y - 20);
+               this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
+               
+               tabViews.Visible = true;
+           }
+           else
+           {
+               this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
+
+               this.Controls.Add(this.lsvTasks);
+               this.lsvTasks.Dock = System.Windows.Forms.DockStyle.None;
+               this.lsvTasks.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height - 60);
+               this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y + 20);
+               
+               this.Controls.Add(this.ganttChart);
+               this.ganttChart.Dock = System.Windows.Forms.DockStyle.None;
+               this.ganttChart.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height -60);
+               this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y + 20);
+
+               tabViews.Visible = false;
+           }
+       }
 
     }
 
