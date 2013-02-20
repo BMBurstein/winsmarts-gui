@@ -21,6 +21,7 @@ namespace Logger
             //spans.Clear(); 
             names.Clear();
             indexes.Clear();
+            //Invalidate();
         }
 		
         public void addTask(uint index, string name)
