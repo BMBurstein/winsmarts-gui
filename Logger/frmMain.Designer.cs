@@ -29,24 +29,24 @@
 		private void InitializeComponent()
 		{
             this.tabViews = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabTaskList = new System.Windows.Forms.TabPage();
             this.lsvTasks = new System.Windows.Forms.ListView();
             this.tid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabGantt = new System.Windows.Forms.TabPage();
             this.Show_tabs = new System.Windows.Forms.CheckBox();
             this.ganttChart = new Logger.Gantt();
             this.tabViews.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabTaskList.SuspendLayout();
+            this.tabGantt.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabViews
             // 
-            this.tabViews.Controls.Add(this.tabPage1);
-            this.tabViews.Controls.Add(this.tabPage2);
+            this.tabViews.Controls.Add(this.tabTaskList);
+            this.tabViews.Controls.Add(this.tabGantt);
             this.tabViews.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabViews.Location = new System.Drawing.Point(0, 26);
             this.tabViews.Name = "tabViews";
@@ -56,14 +56,14 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.lsvTasks);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(608, 315);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Task Manager";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabTaskList.Controls.Add(this.lsvTasks);
+            this.tabTaskList.Location = new System.Drawing.Point(4, 22);
+            this.tabTaskList.Name = "tabPage1";
+            this.tabTaskList.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTaskList.Size = new System.Drawing.Size(608, 315);
+            this.tabTaskList.TabIndex = 0;
+            this.tabTaskList.Text = "Task Manager";
+            this.tabTaskList.UseVisualStyleBackColor = true;
             // 
             // lsvTasks
             // 
@@ -100,14 +100,14 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.ganttChart);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(608, 315);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Gantt Chart";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabGantt.Controls.Add(this.ganttChart);
+            this.tabGantt.Location = new System.Drawing.Point(4, 22);
+            this.tabGantt.Name = "tabPage2";
+            this.tabGantt.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGantt.Size = new System.Drawing.Size(608, 315);
+            this.tabGantt.TabIndex = 1;
+            this.tabGantt.Text = "Gantt Chart";
+            this.tabGantt.UseVisualStyleBackColor = true;
             // 
             // Show_tabs
             // 
@@ -141,8 +141,8 @@
             this.Text = "Logger Test";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.tabViews.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.tabTaskList.ResumeLayout(false);
+            this.tabGantt.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,8 +151,8 @@
 		#endregion
 
 		private System.Windows.Forms.TabControl tabViews;
-		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.TabPage tabTaskList;
+		private System.Windows.Forms.TabPage tabGantt;
 		private System.Windows.Forms.ListView lsvTasks;
 		private System.Windows.Forms.ColumnHeader tid;
 		private System.Windows.Forms.ColumnHeader name;

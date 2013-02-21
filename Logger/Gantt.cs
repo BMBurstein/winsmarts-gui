@@ -12,37 +12,21 @@ namespace Logger
 	public partial class Gantt : UserControl
 	{
 		private List<GanttSpan> spans = new List<GanttSpan>();
-		private List<string> names = new List<string>();
-		private SortedList<uint, int> indexes = new SortedList<uint, int>();
+		//private List<string> names = new List<string>();
+		private SortedList<uint, GanttTask> tasks = new SortedList<uint, GanttTask>();
 		private uint sliceCount = 0;
 
-        public void reset()
-        {
-            //spans.Clear(); 
-            names.Clear();
-            indexes.Clear();
-            //Invalidate();
-        }
-		
-        public void addTask(uint index, string name)
+		public void reset()
 		{
-			names.Add(name);
-			indexes.Add(index, names.Count - 1);
+			//spans.Clear();
+			tasks.Clear();
+			//Invalidate();
 		}
-
-		//public void addSpan(uint index, float start, float duration)
-		//{
-		//    GanttSpan span = new GanttSpan() { taskIndex = index, start = start, duration = duration };
-		//    if (spans.Count > 1 && span.CompareTo(spans.Last()) < 0)
-		//    {
-		//        spans.Add(span);
-		//        spans.Sort();
-		//    }
-		//    else
-		//    {
-		//        spans.Add(span);
-		//    }
-		//}
+		
+		public void addTask(uint index, string name)
+		{
+			tasks.Add(index, new GanttTask(name));
+		}
 
 		public void addSlice(uint index)
 		{
@@ -70,14 +54,14 @@ namespace Logger
 		{
 			Graphics g = e.Graphics;
 			float left = Math.Max(Width / 8, 50);
-			float rowHeight = this.Height / (names.Count + 1);
+			float rowHeight = this.Height / (tasks.Count + 1);
 			RectangleF box = new RectangleF(0, 0, left, rowHeight);
 			float endX = Width;
 
-			for (int i = 0; i < names.Count; ++i)
+			for (int i = 0; i < tasks.Count; ++i)
 			{
 				box.Y = rowHeight * i;
-				g.DrawString(names[i], DefaultFont, Brushes.Black, box, sf);
+				g.DrawString(tasks.Values[i].name, DefaultFont, Brushes.Black, box, sf);
 			}
 
 			for (int i = spans.Count - 1; i >= 0; --i)
@@ -85,10 +69,22 @@ namespace Logger
 				endX -= spans[i].duration;
 				if (endX <= left)
 				{
-					g.FillRectangle(Brushes.LightGreen, left, rowHeight * indexes[spans[i].taskIndex] + rowHeight / 4, spans[i].duration - (left - endX), rowHeight / 2);
+					g.FillRectangle(tasks[spans[i].taskIndex].brush, left, rowHeight * tasks.IndexOfKey(spans[i].taskIndex) + rowHeight / 4, spans[i].duration - (left - endX), rowHeight / 2);
 					break;
 				}
-				g.FillRectangle(Brushes.LightGreen, endX, rowHeight * indexes[spans[i].taskIndex] + rowHeight / 4, spans[i].duration, rowHeight / 2);
+				g.FillRectangle(tasks[spans[i].taskIndex].brush, endX, rowHeight * tasks.IndexOfKey(spans[i].taskIndex) + rowHeight / 4, spans[i].duration, rowHeight / 2);
+			}
+		}
+
+		private class GanttTask
+		{
+			private static readonly Random rand = new Random();
+			public string name { get; set; }
+			public Brush brush { get; set; }
+			public GanttTask(string name)
+			{
+				this.name = name;
+				brush = new SolidBrush(Color.FromArgb(rand.Next(128), rand.Next(128), rand.Next(128)));
 			}
 		}
 

@@ -111,11 +111,11 @@ namespace Logger
         {
             if (Show_tabs.Checked)
             {
-                this.tabPage1.Controls.Add(this.lsvTasks);
+                this.tabTaskList.Controls.Add(this.lsvTasks);
                 this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y - 20);
                 this.lsvTasks.Dock = DockStyle.Fill;
 
-                this.tabPage2.Controls.Add(this.ganttChart);
+                this.tabGantt.Controls.Add(this.ganttChart);
                 this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y - 20);
                 this.ganttChart.Dock = DockStyle.Fill;
 
