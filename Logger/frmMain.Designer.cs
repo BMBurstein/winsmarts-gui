@@ -38,7 +38,7 @@
             this.tabGantt = new System.Windows.Forms.TabPage();
             this.Hide_tabs = new System.Windows.Forms.CheckBox();
             this.WindowSplitter = new System.Windows.Forms.SplitContainer();
-            this.TabSplitter = new System.Windows.Forms.SplitContainer();
+            this.StopView = new System.Windows.Forms.CheckBox();
             this.ganttChart = new Logger.Gantt();
             this.tabViews.SuspendLayout();
             this.tabTaskList.SuspendLayout();
@@ -47,8 +47,6 @@
             this.WindowSplitter.Panel1.SuspendLayout();
             this.WindowSplitter.Panel2.SuspendLayout();
             this.WindowSplitter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).BeginInit();
-            this.TabSplitter.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabViews
@@ -112,7 +110,7 @@
             this.tabGantt.Location = new System.Drawing.Point(4, 22);
             this.tabGantt.Name = "tabGantt";
             this.tabGantt.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGantt.Size = new System.Drawing.Size(335, 199);
+            this.tabGantt.Size = new System.Drawing.Size(606, 310);
             this.tabGantt.TabIndex = 1;
             this.tabGantt.Text = "Gantt Chart";
             this.tabGantt.UseVisualStyleBackColor = true;
@@ -139,32 +137,33 @@
             // 
             // WindowSplitter.Panel1
             // 
+            this.WindowSplitter.Panel1.Controls.Add(this.StopView);
             this.WindowSplitter.Panel1.Controls.Add(this.Hide_tabs);
             // 
             // WindowSplitter.Panel2
             // 
-            this.WindowSplitter.Panel2.Controls.Add(this.TabSplitter);
             this.WindowSplitter.Panel2.Controls.Add(this.tabViews);
             this.WindowSplitter.Size = new System.Drawing.Size(616, 367);
             this.WindowSplitter.SplitterDistance = 25;
             this.WindowSplitter.TabIndex = 3;
             // 
-            // TabSplitter
+            // StopView
             // 
-            this.TabSplitter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TabSplitter.Location = new System.Drawing.Point(370, 70);
-            this.TabSplitter.Name = "TabSplitter";
-            this.TabSplitter.Size = new System.Drawing.Size(150, 100);
-            this.TabSplitter.SplitterDistance = 121;
-            this.TabSplitter.TabIndex = 2;
-            this.TabSplitter.Visible = false;
+            this.StopView.Appearance = System.Windows.Forms.Appearance.Button;
+            this.StopView.AutoSize = true;
+            this.StopView.Location = new System.Drawing.Point(69, 0);
+            this.StopView.Name = "StopView";
+            this.StopView.Size = new System.Drawing.Size(64, 23);
+            this.StopView.TabIndex = 3;
+            this.StopView.Text = "Stop view";
+            this.StopView.UseVisualStyleBackColor = true;
             // 
             // ganttChart
             // 
             this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ganttChart.Location = new System.Drawing.Point(3, 3);
             this.ganttChart.Name = "ganttChart";
-            this.ganttChart.Size = new System.Drawing.Size(329, 193);
+            this.ganttChart.Size = new System.Drawing.Size(600, 304);
             this.ganttChart.TabIndex = 0;
             // 
             // frmMain
@@ -184,8 +183,6 @@
             this.WindowSplitter.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.WindowSplitter)).EndInit();
             this.WindowSplitter.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).EndInit();
-            this.TabSplitter.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -204,6 +201,7 @@
         private System.Windows.Forms.CheckBox Hide_tabs;
         private System.Windows.Forms.SplitContainer WindowSplitter;
         private System.Windows.Forms.SplitContainer TabSplitter;
+        private System.Windows.Forms.CheckBox StopView;
 	}
 }
 

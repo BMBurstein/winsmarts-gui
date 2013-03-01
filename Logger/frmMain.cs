@@ -109,9 +109,12 @@ namespace Logger
         {
             if (Hide_tabs.Checked)
             {
+                if (this.TabSplitter == null)
+                    CreateTabSplitter();
+
                 this.tabViews.Visible = false;
                 this.TabSplitter.Visible = true;
-                this.TabSplitter.Dock = DockStyle.Fill;                             //TEMP
+                this.WindowSplitter.Panel2.Controls.Add(this.TabSplitter);
                 this.TabSplitter.SplitterDistance = WindowSplitter.Width / 2;
                 this.TabSplitter.Panel1.Controls.Add(this.lsvTasks);
                 this.TabSplitter.Panel2.Controls.Add(this.ganttChart);
@@ -126,6 +129,34 @@ namespace Logger
             }
         }
 
+        private void CreateTabSplitter()
+        {
+            this.TabSplitter = new System.Windows.Forms.SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).BeginInit();
+            this.TabSplitter.SuspendLayout();
+            this.TabSplitter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TabSplitter.Location = new System.Drawing.Point(370, 70);
+            this.TabSplitter.Name = "TabSplitter";
+            this.TabSplitter.Size = new System.Drawing.Size(150, 100);
+            this.TabSplitter.SplitterDistance = 121;
+            this.TabSplitter.TabIndex = 2;
+            this.TabSplitter.Visible = false;
+            this.TabSplitter.Dock = DockStyle.Fill;                             
+            ((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).EndInit();
+            this.TabSplitter.ResumeLayout(false);
+        }
+
+        private void StopView_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.StopView.Checked)
+            {
+                //ganttChart.StopView = false;
+            }
+            else
+            {
+                //ganttChart.StopView = true;
+            }
+        }
     }
 
     public enum TaskStates
