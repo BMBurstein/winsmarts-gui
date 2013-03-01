@@ -19,8 +19,6 @@ namespace Logger
         public frmMain()
         {
             InitializeComponent();
-            this.tabViews.Dock = DockStyle.Bottom;
-            this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
         }
 
         private void reset()
@@ -109,33 +107,22 @@ namespace Logger
 
         private void Show_tabs_CheckedChanged(object sender, EventArgs e)
         {
-            if (Show_tabs.Checked)
+            if (Hide_tabs.Checked)
             {
-                this.tabTaskList.Controls.Add(this.lsvTasks);
-                this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y - 20);
-                this.lsvTasks.Dock = DockStyle.Fill;
-
-                this.tabGantt.Controls.Add(this.ganttChart);
-                this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y - 20);
-                this.ganttChart.Dock = DockStyle.Fill;
-
-                tabViews.Visible = true;
+                this.tabViews.Visible = false;
+                this.TabSplitter.Visible = true;
+                this.TabSplitter.Dock = DockStyle.Fill;                             //TEMP
+                this.TabSplitter.SplitterDistance = WindowSplitter.Width / 2;
+                this.TabSplitter.Panel1.Controls.Add(this.lsvTasks);
+                this.TabSplitter.Panel2.Controls.Add(this.ganttChart);
             }
             else
             {
-                this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
-
-                this.Controls.Add(this.lsvTasks);
-                this.lsvTasks.Dock = DockStyle.None;
-                this.lsvTasks.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height - 60);
-                this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y + 20);
-
-                this.Controls.Add(this.ganttChart);
-                this.ganttChart.Dock = DockStyle.None;
-                this.ganttChart.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height - 60);
-                this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y + 20);
-
-                tabViews.Visible = false;
+                this.TabSplitter.Visible = false;
+                this.tabViews.Visible = true;
+                this.WindowSplitter.Panel2.Controls.Add(this.tabViews);
+                this.tabTaskList.Controls.Add(this.lsvTasks);
+                this.tabGantt.Controls.Add(this.ganttChart);
             }
         }
 
