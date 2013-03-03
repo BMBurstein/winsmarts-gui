@@ -36,31 +36,37 @@
             this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabGantt = new System.Windows.Forms.TabPage();
-            this.Show_tabs = new System.Windows.Forms.CheckBox();
+            this.Hide_tabs = new System.Windows.Forms.CheckBox();
+            this.WindowSplitter = new System.Windows.Forms.SplitContainer();
+            this.StopView = new System.Windows.Forms.CheckBox();
             this.ganttChart = new Logger.Gantt();
             this.tabViews.SuspendLayout();
             this.tabTaskList.SuspendLayout();
             this.tabGantt.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowSplitter)).BeginInit();
+            this.WindowSplitter.Panel1.SuspendLayout();
+            this.WindowSplitter.Panel2.SuspendLayout();
+            this.WindowSplitter.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabViews
             // 
             this.tabViews.Controls.Add(this.tabTaskList);
             this.tabViews.Controls.Add(this.tabGantt);
-            this.tabViews.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabViews.Location = new System.Drawing.Point(0, 26);
+            this.tabViews.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabViews.Location = new System.Drawing.Point(0, 0);
             this.tabViews.Name = "tabViews";
             this.tabViews.SelectedIndex = 0;
-            this.tabViews.Size = new System.Drawing.Size(616, 341);
+            this.tabViews.Size = new System.Drawing.Size(614, 336);
             this.tabViews.TabIndex = 1;
             // 
-            // tabPage1
+            // tabTaskList
             // 
             this.tabTaskList.Controls.Add(this.lsvTasks);
             this.tabTaskList.Location = new System.Drawing.Point(4, 22);
-            this.tabTaskList.Name = "tabPage1";
+            this.tabTaskList.Name = "tabTaskList";
             this.tabTaskList.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTaskList.Size = new System.Drawing.Size(608, 315);
+            this.tabTaskList.Size = new System.Drawing.Size(606, 310);
             this.tabTaskList.TabIndex = 0;
             this.tabTaskList.Text = "Task Manager";
             this.tabTaskList.UseVisualStyleBackColor = true;
@@ -77,7 +83,7 @@
             this.lsvTasks.Location = new System.Drawing.Point(3, 3);
             this.lsvTasks.MultiSelect = false;
             this.lsvTasks.Name = "lsvTasks";
-            this.lsvTasks.Size = new System.Drawing.Size(602, 309);
+            this.lsvTasks.Size = new System.Drawing.Size(600, 304);
             this.lsvTasks.TabIndex = 0;
             this.lsvTasks.UseCompatibleStateImageBehavior = false;
             this.lsvTasks.View = System.Windows.Forms.View.Details;
@@ -98,36 +104,66 @@
             // 
             this.state.Text = "State";
             // 
-            // tabPage2
+            // tabGantt
             // 
             this.tabGantt.Controls.Add(this.ganttChart);
             this.tabGantt.Location = new System.Drawing.Point(4, 22);
-            this.tabGantt.Name = "tabPage2";
+            this.tabGantt.Name = "tabGantt";
             this.tabGantt.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGantt.Size = new System.Drawing.Size(608, 315);
+            this.tabGantt.Size = new System.Drawing.Size(606, 310);
             this.tabGantt.TabIndex = 1;
             this.tabGantt.Text = "Gantt Chart";
             this.tabGantt.UseVisualStyleBackColor = true;
             // 
-            // Show_tabs
+            // Hide_tabs
             // 
-            this.Show_tabs.AutoSize = true;
-            this.Show_tabs.Checked = true;
-            this.Show_tabs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.Show_tabs.Location = new System.Drawing.Point(0, 3);
-            this.Show_tabs.Name = "Show_tabs";
-            this.Show_tabs.Size = new System.Drawing.Size(76, 17);
-            this.Show_tabs.TabIndex = 2;
-            this.Show_tabs.Text = "Show tabs";
-            this.Show_tabs.UseVisualStyleBackColor = true;
-            this.Show_tabs.CheckedChanged += new System.EventHandler(this.Show_tabs_CheckedChanged);
+            this.Hide_tabs.Appearance = System.Windows.Forms.Appearance.Button;
+            this.Hide_tabs.AutoSize = true;
+            this.Hide_tabs.Location = new System.Drawing.Point(0, 0);
+            this.Hide_tabs.Name = "Hide_tabs";
+            this.Hide_tabs.Size = new System.Drawing.Size(62, 23);
+            this.Hide_tabs.TabIndex = 2;
+            this.Hide_tabs.Text = "Hide tabs";
+            this.Hide_tabs.UseVisualStyleBackColor = true;
+            this.Hide_tabs.CheckedChanged += new System.EventHandler(this.Show_tabs_CheckedChanged);
+            // 
+            // WindowSplitter
+            // 
+            this.WindowSplitter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.WindowSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WindowSplitter.Location = new System.Drawing.Point(0, 0);
+            this.WindowSplitter.Name = "WindowSplitter";
+            this.WindowSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // WindowSplitter.Panel1
+            // 
+            this.WindowSplitter.Panel1.Controls.Add(this.StopView);
+            this.WindowSplitter.Panel1.Controls.Add(this.Hide_tabs);
+            // 
+            // WindowSplitter.Panel2
+            // 
+            this.WindowSplitter.Panel2.Controls.Add(this.tabViews);
+            this.WindowSplitter.Size = new System.Drawing.Size(616, 367);
+            this.WindowSplitter.SplitterDistance = 25;
+            this.WindowSplitter.TabIndex = 3;
+            // 
+            // StopView
+            // 
+            this.StopView.Appearance = System.Windows.Forms.Appearance.Button;
+            this.StopView.AutoSize = true;
+            this.StopView.Location = new System.Drawing.Point(69, 0);
+            this.StopView.Name = "StopView";
+            this.StopView.Size = new System.Drawing.Size(64, 23);
+            this.StopView.TabIndex = 3;
+            this.StopView.Text = "Stop view";
+            this.StopView.UseVisualStyleBackColor = true;
             // 
             // ganttChart
             // 
             this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ganttChart.Location = new System.Drawing.Point(3, 3);
             this.ganttChart.Name = "ganttChart";
-            this.ganttChart.Size = new System.Drawing.Size(602, 309);
+            this.ganttChart.Size = new System.Drawing.Size(600, 304);
             this.ganttChart.TabIndex = 0;
             // 
             // frmMain
@@ -135,16 +171,19 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(616, 367);
-            this.Controls.Add(this.Show_tabs);
-            this.Controls.Add(this.tabViews);
+            this.Controls.Add(this.WindowSplitter);
             this.Name = "frmMain";
             this.Text = "Logger Test";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.tabViews.ResumeLayout(false);
             this.tabTaskList.ResumeLayout(false);
             this.tabGantt.ResumeLayout(false);
+            this.WindowSplitter.Panel1.ResumeLayout(false);
+            this.WindowSplitter.Panel1.PerformLayout();
+            this.WindowSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.WindowSplitter)).EndInit();
+            this.WindowSplitter.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
 		}
 
@@ -159,7 +198,10 @@
 		private System.Windows.Forms.ColumnHeader priority;
 		private System.Windows.Forms.ColumnHeader state;
 		private Gantt ganttChart;
-        private System.Windows.Forms.CheckBox Show_tabs;
+        private System.Windows.Forms.CheckBox Hide_tabs;
+        private System.Windows.Forms.SplitContainer WindowSplitter;
+        private System.Windows.Forms.SplitContainer TabSplitter;
+        private System.Windows.Forms.CheckBox StopView;
 	}
 }
 

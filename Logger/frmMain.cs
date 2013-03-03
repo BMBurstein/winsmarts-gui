@@ -19,8 +19,6 @@ namespace Logger
         public frmMain()
         {
             InitializeComponent();
-            this.tabViews.Dock = DockStyle.Bottom;
-            this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
         }
 
         private void reset()
@@ -109,36 +107,56 @@ namespace Logger
 
         private void Show_tabs_CheckedChanged(object sender, EventArgs e)
         {
-            if (Show_tabs.Checked)
+            if (Hide_tabs.Checked)
             {
-                this.tabTaskList.Controls.Add(this.lsvTasks);
-                this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y - 20);
-                this.lsvTasks.Dock = DockStyle.Fill;
+                if (this.TabSplitter == null)
+                    CreateTabSplitter();
 
-                this.tabGantt.Controls.Add(this.ganttChart);
-                this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y - 20);
-                this.ganttChart.Dock = DockStyle.Fill;
-
-                tabViews.Visible = true;
+                this.tabViews.Visible = false;
+                this.TabSplitter.Visible = true;
+                this.WindowSplitter.Panel2.Controls.Add(this.TabSplitter);
+                this.TabSplitter.SplitterDistance = WindowSplitter.Width / 2;
+                this.TabSplitter.Panel1.Controls.Add(this.lsvTasks);
+                this.TabSplitter.Panel2.Controls.Add(this.ganttChart);
             }
             else
             {
-                this.tabViews.Size = new System.Drawing.Size(this.tabViews.Size.Width, this.Size.Height - 60);
-
-                this.Controls.Add(this.lsvTasks);
-                this.lsvTasks.Dock = DockStyle.None;
-                this.lsvTasks.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height - 60);
-                this.lsvTasks.Location = new Point(this.lsvTasks.Location.X, this.lsvTasks.Location.Y + 20);
-
-                this.Controls.Add(this.ganttChart);
-                this.ganttChart.Dock = DockStyle.None;
-                this.ganttChart.Size = new System.Drawing.Size(this.Size.Width / 2 - 10, this.Size.Height - 60);
-                this.ganttChart.Location = new Point(this.Size.Width / 2, this.ganttChart.Location.Y + 20);
-
-                tabViews.Visible = false;
+                this.TabSplitter.Visible = false;
+                this.tabViews.Visible = true;
+                this.WindowSplitter.Panel2.Controls.Add(this.tabViews);
+                this.tabTaskList.Controls.Add(this.lsvTasks);
+                this.tabGantt.Controls.Add(this.ganttChart);
             }
         }
 
+        private void CreateTabSplitter()
+        {
+            this.TabSplitter = new System.Windows.Forms.SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).BeginInit();
+            this.TabSplitter.SuspendLayout();
+            this.TabSplitter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TabSplitter.Location = new System.Drawing.Point(370, 70);
+            this.TabSplitter.Name = "TabSplitter";
+            this.TabSplitter.Size = new System.Drawing.Size(150, 100);
+            this.TabSplitter.SplitterDistance = 121;
+            this.TabSplitter.TabIndex = 2;
+            this.TabSplitter.Visible = false;
+            this.TabSplitter.Dock = DockStyle.Fill;                             
+            ((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).EndInit();
+            this.TabSplitter.ResumeLayout(false);
+        }
+
+        private void StopView_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.StopView.Checked)
+            {
+                //ganttChart.StopView = false;
+            }
+            else
+            {
+                //ganttChart.StopView = true;
+            }
+        }
     }
 
     public enum TaskStates
