@@ -66,6 +66,7 @@ namespace Logger
 				};
 			splt.Panel1.Controls.Add(l);
 			splt.Panel1.Controls.SetChildIndex(l, 0);
+			splt.Panel1.VerticalScroll.Maximum = (int)(rowHeight * (tasks.Count + 0.5));
 		}
 
 		public void addSlice(uint index)
@@ -85,17 +86,27 @@ namespace Logger
 		public Gantt()
 		{
 			InitializeComponent();
+			splt.Panel1.Controls.Add(new Label() { Height = (int)(rowHeight * 0.5), Dock = DockStyle.Bottom });
 			splt.Panel2.Controls.Add(chart);
 			chart.Paint += Chart_Paint;
+			chart.Scroll += Chart_Scroll;
 			RowHeight = 50;
 			YScale = 5;
+		}
+
+		private void Chart_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (e.ScrollOrientation == ScrollOrientation.VerticalScroll)
+			{
+				splt.Panel1.VerticalScroll.Value = e.NewValue;
+			}
 		}
 
 		private void Chart_Paint(object sender, PaintEventArgs e)
 		{
 			Graphics g = e.Graphics;
 			bool autoScroll = (chart.Width - chart.AutoScrollPosition.X >= chart.AutoScrollMinSize.Width);
-			chart.AutoScrollMinSize = new Size((int)sliceCount * scale, 0);
+			chart.AutoScrollMinSize = new Size((int)sliceCount * scale, (int)(rowHeight * (tasks.Count + 0.5)));
 
 			g.TranslateTransform(chart.AutoScrollPosition.X, chart.AutoScrollPosition.Y);
 			foreach (var span in spans)
