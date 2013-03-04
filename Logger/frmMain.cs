@@ -37,7 +37,8 @@ namespace Logger
             {
                 doStuff(Encoding.ASCII.GetString(rcv));
             }));
-            udpc.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+            if (!StopView.Checked)
+                udpc.BeginReceive(new AsyncCallback(ReceiveCallback), null);
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -64,7 +65,7 @@ namespace Logger
                 case "StatusChanged":
                     handleStatusChanged(parts);
                     break;
-                    
+
                 default:
                     break;
             }
@@ -141,21 +142,15 @@ namespace Logger
             this.TabSplitter.SplitterDistance = 121;
             this.TabSplitter.TabIndex = 2;
             this.TabSplitter.Visible = false;
-            this.TabSplitter.Dock = DockStyle.Fill;                             
+            this.TabSplitter.Dock = DockStyle.Fill;
             ((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).EndInit();
             this.TabSplitter.ResumeLayout(false);
         }
 
         private void StopView_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.StopView.Checked)
-            {
-                //ganttChart.StopView = false;
-            }
-            else
-            {
-                //ganttChart.StopView = true;
-            }
+            if (!StopView.Checked)
+                udpc.BeginReceive(new AsyncCallback(ReceiveCallback), null);
         }
     }
 

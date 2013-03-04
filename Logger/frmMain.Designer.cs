@@ -36,10 +36,10 @@
             this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabGantt = new System.Windows.Forms.TabPage();
+            this.ganttChart = new Logger.Gantt();
             this.Hide_tabs = new System.Windows.Forms.CheckBox();
             this.WindowSplitter = new System.Windows.Forms.SplitContainer();
             this.StopView = new System.Windows.Forms.CheckBox();
-            this.ganttChart = new Logger.Gantt();
             this.tabViews.SuspendLayout();
             this.tabTaskList.SuspendLayout();
             this.tabGantt.SuspendLayout();
@@ -115,6 +115,16 @@
             this.tabGantt.Text = "Gantt Chart";
             this.tabGantt.UseVisualStyleBackColor = true;
             // 
+            // ganttChart
+            // 
+            this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ganttChart.Location = new System.Drawing.Point(3, 3);
+            this.ganttChart.Name = "ganttChart";
+            this.ganttChart.RowHeight = 50;
+            this.ganttChart.Size = new System.Drawing.Size(600, 304);
+            this.ganttChart.TabIndex = 0;
+            this.ganttChart.YScale = 5;
+            // 
             // Hide_tabs
             // 
             this.Hide_tabs.Appearance = System.Windows.Forms.Appearance.Button;
@@ -131,6 +141,7 @@
             // 
             this.WindowSplitter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.WindowSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WindowSplitter.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.WindowSplitter.Location = new System.Drawing.Point(0, 0);
             this.WindowSplitter.Name = "WindowSplitter";
             this.WindowSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -157,14 +168,7 @@
             this.StopView.TabIndex = 3;
             this.StopView.Text = "Stop view";
             this.StopView.UseVisualStyleBackColor = true;
-            // 
-            // ganttChart
-            // 
-            this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ganttChart.Location = new System.Drawing.Point(3, 3);
-            this.ganttChart.Name = "ganttChart";
-            this.ganttChart.Size = new System.Drawing.Size(600, 304);
-            this.ganttChart.TabIndex = 0;
+            this.StopView.CheckedChanged += new System.EventHandler(this.StopView_CheckedChanged);
             // 
             // frmMain
             // 
