@@ -31,6 +31,8 @@ namespace Logger
 				{
 					label.Height = rowHeight;
 				}
+				splt.Panel1.Controls[0].Height = (int)(rowHeight * 0.5);
+				splt.Panel1.VerticalScroll.Maximum = (int)(rowHeight * (tasks.Count + 0.5));
 				Invalidate();
 			}
 		}
@@ -65,7 +67,7 @@ namespace Logger
 					TextAlign = ContentAlignment.MiddleRight
 				};
 			splt.Panel1.Controls.Add(l);
-			splt.Panel1.Controls.SetChildIndex(l, 0);
+			splt.Panel1.Controls.SetChildIndex(l, 1);
 			splt.Panel1.VerticalScroll.Maximum = (int)(rowHeight * (tasks.Count + 0.5));
 		}
 
