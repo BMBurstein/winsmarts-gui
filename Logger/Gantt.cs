@@ -51,9 +51,9 @@ namespace Logger
 
 		public void reset()
 		{
-			//spans.Clear();
+			spans.Clear();
 			tasks.Clear();
-			//Invalidate();
+			Invalidate();
 		}
 		
 		public void addTask(uint index, string name)
@@ -63,12 +63,13 @@ namespace Logger
 				{
 					Text = name,
 					Height = RowHeight,
-					Dock = DockStyle.Top,
+					Dock = DockStyle.Top, //todo: maybe dock to bottom and no need to play with ChildIndex?
 					TextAlign = ContentAlignment.MiddleRight
 				};
 			splt.Panel1.Controls.Add(l);
 			splt.Panel1.Controls.SetChildIndex(l, 1);
 			splt.Panel1.VerticalScroll.Maximum = (int)(rowHeight * (tasks.Count + 0.5));
+			Invalidate();
 		}
 
 		public void addSlice(uint index)
@@ -132,7 +133,7 @@ namespace Logger
 				this.index = index;
 				this.name = name;
 				this.order = order;
-				brush = new SolidBrush(Color.FromArgb(rand.Next(192), rand.Next(192), rand.Next(192)));
+				brush = new SolidBrush(Color.FromArgb(rand.Next(32, 192), rand.Next(32, 192), rand.Next(32, 192)));
 			}
 		}
 
