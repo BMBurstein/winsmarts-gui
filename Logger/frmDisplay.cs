@@ -24,21 +24,28 @@ namespace Logger
 			
 		}
 
-		internal void handleMsg(string[] parts)
+		internal void handleMsg(LogMsg msg, string s)
 		{
+			string[] parts = s.Split(';');
+
 			msgHistory.Add(parts);
-			switch (parts[0])
+			switch (msg)
 			{
-				case "DeclareTask":
+				case LogMsg.LOG_NEW_TASK:
 					handleDeclareTask(parts);
 					break;
-				case "ContextSwitch":
+				case LogMsg.LOG_CONTEXT_SWITCH:
 					handleContextSwitch(parts);
 					break;
-				case "StatusChanged":
+				case LogMsg.LOG_CONTEXT_SWITCH_ON:
+					break;
+				case LogMsg.LOG_CONTEXT_SWITCH_OFF:
+					break;
+				case LogMsg.LOG_TIMER:
+					break;
+				case LogMsg.LOG_TASK_STATUS_CHANGE:
 					handleStatusChanged(parts);
 					break;
-
 				default:
 					break;
 			}
@@ -46,15 +53,15 @@ namespace Logger
 
 		private void handleContextSwitch(string[] parts)
 		{
-			ganttChart.addSlice(uint.Parse(parts[2]));
+			ganttChart.addSlice(uint.Parse(parts[0]));
 		}
 
 		private void handleDeclareTask(string[] parts)
 		{
-			Task task = new Task() { tid = uint.Parse(parts[2]), name = parts[3], priority = uint.Parse(parts[4]), state = TaskStates.READY };
+			Task task = new Task() { tid = uint.Parse(parts[0]), name = parts[1], priority = uint.Parse(parts[2]), state = TaskStates.READY };
 			tasks.Add(task);
 			
-			ListViewItem item = new ListViewItem(parts.Skip(2).ToArray());
+			ListViewItem item = new ListViewItem(parts.ToArray());
 			if (item.SubItems[2].Text == uint.MaxValue.ToString())
 				item.SubItems[2].Text = "MAX_INT";
 			item.SubItems.Add("Ready");
@@ -67,9 +74,9 @@ namespace Logger
 		{
 			foreach (ListViewItem item in lsvTasks.Items)
 			{
-				if (item.SubItems[0].Text == parts[2])
+				if (item.SubItems[0].Text == parts[0])
 				{
-					item.SubItems[3].Text = parts[3];
+					item.SubItems[3].Text = parts[1];
 				}
 			}
 		}
