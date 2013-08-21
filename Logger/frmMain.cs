@@ -41,11 +41,16 @@ namespace Logger
 		// All log proccessing should be done here
 		private void doStuff(string s)
 		{
-			string[] parts = s.Split(';');
+			LogMsg msg;
 
-			switch (parts[0])
+			if (s == "")
+				msg = LogMsg.LOG_START;
+			else
+				msg = (LogMsg)s[4];
+
+			switch (msg)
 			{
-				case "Start":
+				case LogMsg.LOG_START:
 					if (activeDisplay != null)
 					{
 						activeDisplay.done();
@@ -55,14 +60,9 @@ namespace Logger
 					allDisplays.Add(activeDisplay);
 					activeDisplay.Show();
 					break;
-				case "DeclareTask":
-				case "ContextSwitch":
-				case "StatusChanged":
-					if (activeDisplay != null)
-						activeDisplay.handleMsg(parts);
-					break;
-
 				default:
+					if (activeDisplay != null)
+						activeDisplay.handleMsg(msg, s.Substring(5));
 					break;
 			}
 		}
