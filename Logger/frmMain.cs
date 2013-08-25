@@ -75,8 +75,7 @@ namespace Logger
 			{
 				if (activeDisplay.IsDisposed)
 				{
-					activeDisplay = new frmDisplay();
-					activeDisplay.log = allLogs.Last();
+					activeDisplay = new frmDisplay(allLogs.Last());
 					activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
 				}
 				activeDisplay.Show();
@@ -86,8 +85,7 @@ namespace Logger
 			}
 			else
 			{
-				var disp = new frmDisplay();
-				disp.log = allLogs[lstLogs.SelectedIndex];
+				var disp = new frmDisplay(allLogs[lstLogs.SelectedIndex], false);
 				disp.Text = lstLogs.SelectedItem.ToString();
 				disp.Show();
 				disp.BringToFront();
