@@ -14,8 +14,8 @@ namespace Logger
 	public partial class frmMain : Form
 	{
 		UdpClient udpc = new UdpClient(44557);
-		frmDisplay activeDisplay;
-		List<frmDisplay> allDisplays = new List<frmDisplay>();
+		frmDisplay activeDisplay = new frmDisplay();
+		List<List<LogEntry>> allLogs = new List<List<LogEntry>>();
 
 		public frmMain()
 		{
@@ -38,32 +38,59 @@ namespace Logger
 			udpc.BeginReceive(new AsyncCallback(ReceiveCallback), null);
 		}
 
-		// All log proccessing should be done here
 		private void doStuff(string s)
 		{
-			LogMsg msg;
+			LogEntry entry = new LogEntry();
 
-			if (s == "")
-				msg = LogMsg.LOG_START;
-			else
-				msg = (LogMsg)s[4];
+			entry.msg = (LogMsg)s[0];
 
-			switch (msg)
+			switch (entry.msg)
 			{
 				case LogMsg.LOG_START:
-					if (activeDisplay != null)
+					if (activeDisplay.IsDisposed)
 					{
-						activeDisplay.done();
-						activeDisplay.Hide();
+						activeDisplay = new frmDisplay();
 					}
-					activeDisplay = new frmDisplay();
-					allDisplays.Add(activeDisplay);
+					else
+					{
+						activeDisplay.Clear();
+					}
 					activeDisplay.Show();
+					activeDisplay.BringToFront();
+					allLogs.Add(activeDisplay.log);
+					lstLogs.Items.Add("Log #" + allLogs.Count);
+					activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
 					break;
 				default:
-					if (activeDisplay != null)
-						activeDisplay.handleMsg(msg, s.Substring(5));
+					entry.num = BitConverter.ToUInt32(s.ToByteArray(), 1);
+					entry.props = s.Substring(5).Split(';');
+					activeDisplay.handleMsg(entry);
 					break;
+			}
+		}
+
+		private void lstLogs_DoubleClick(object sender, EventArgs e)
+		{
+			if (lstLogs.SelectedIndex == lstLogs.Items.Count - 1)
+			{
+				if (activeDisplay.IsDisposed)
+				{
+					activeDisplay = new frmDisplay();
+					activeDisplay.log = allLogs.Last();
+					activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
+				}
+				activeDisplay.Show();
+				if (activeDisplay.WindowState == FormWindowState.Minimized)
+					activeDisplay.WindowState = FormWindowState.Normal;
+				activeDisplay.BringToFront();
+			}
+			else
+			{
+				var disp = new frmDisplay();
+				disp.log = allLogs[lstLogs.SelectedIndex];
+				disp.Text = lstLogs.SelectedItem.ToString();
+				disp.Show();
+				disp.BringToFront();
 			}
 		}
 

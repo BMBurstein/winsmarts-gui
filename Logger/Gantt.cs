@@ -49,10 +49,11 @@ namespace Logger
 			}
 		}
 
-		public void reset()
+		public void Clear()
 		{
 			spans.Clear();
 			tasks.Clear();
+			sliceCount = 0;
 			Invalidate();
 		}
 		
