@@ -53,6 +53,8 @@ namespace Logger
 		{
 			spans.Clear();
 			tasks.Clear();
+			splt.Panel1.Controls.Clear();
+			splt.Panel1.Controls.Add(new Label() { Height = (int)(rowHeight * 0.5), Dock = DockStyle.Bottom });
 			sliceCount = 0;
 			Invalidate();
 		}

@@ -12,6 +12,8 @@ namespace Logger
 	public partial class frmDisplay : Form
 	{
 		List<Task> tasks = new List<Task>();
+		int displayUntil;
+		bool activeMode;
 
 		private List<LogEntry> log_;
 		public List<LogEntry> log
@@ -23,35 +25,61 @@ namespace Logger
 					log_ = new List<LogEntry>();
 				else
 					log_ = value;
-				reset();
+				refill();
 			}
 		}
 
-		public frmDisplay()
+		public frmDisplay(List<LogEntry> log = null, bool active = true)
 		{
 			InitializeComponent();
-			Clear();
+			activeMode = active;
+			Clear(log);
 		}
 
-		public void Clear()
+		public void Clear(List<LogEntry> newLog = null)
 		{
-			log = null;
+			if (!activeMode)
+			{
+				btnPause.Checked = true;
+				btnPause.Enabled = false;
+				displayUntil = newLog.Count;
+			}
+			else
+			{
+				btnPause.Checked = false;
+				btnPause.Enabled = true;
+			}
+			btnPause_Click(btnPause, null);
+			log = newLog;
 		}
 
-		internal void reset()
+		internal void refill()
 		{
 			ganttChart.Clear();
 			lsvTasks.Items.Clear();
-			foreach (var entry in log)
+
+			if (!btnPause.Checked)
+				displayUntil = log.Count;
+			if (displayUntil == 0)
+				return;
+
+			displayUntil--;
+			for (int i = 0; i < displayUntil; i++)
 			{
-				handleMsg(entry, false);
+				handleMsg(log[i], false);
 			}
+			while (displayUntil < log.Count && !handleMsg(log[displayUntil++], false))
+				;
 		}
 
-		internal void handleMsg(LogEntry entry, bool buildLog = true)
+		internal bool handleMsg(LogEntry entry, bool buildLog = true)
 		{
-			if(buildLog)
+			if (buildLog)
+			{
 				log.Add(entry);
+				if (btnPause.Checked)
+					return false;
+			}
 
 			switch (entry.msg)
 			{
@@ -61,18 +89,16 @@ namespace Logger
 				case LogMsg.LOG_CONTEXT_SWITCH:
 					handleContextSwitch(entry);
 					break;
-				case LogMsg.LOG_CONTEXT_SWITCH_ON:
-					break;
-				case LogMsg.LOG_CONTEXT_SWITCH_OFF:
-					break;
-				case LogMsg.LOG_TIMER:
-					break;
 				case LogMsg.LOG_TASK_STATUS_CHANGE:
 					handleStatusChanged(entry);
 					break;
+				case LogMsg.LOG_CONTEXT_SWITCH_ON:
+				case LogMsg.LOG_CONTEXT_SWITCH_OFF:
+				case LogMsg.LOG_TIMER:
 				default:
-					break;
+					return false;
 			}
+			return true;
 		}
 
 		private void handleContextSwitch(LogEntry entry)
@@ -103,6 +129,40 @@ namespace Logger
 					item.SubItems[3].Text = entry.props[1];
 				}
 			}
+		}
+
+		private void btnPause_Click(object sender, EventArgs e)
+		{
+			btnSkipStart.Enabled =
+				btnStepB.Enabled =
+				btnStepF.Enabled =
+				btnSkipEnd.Enabled = btnPause.Checked;
+		}
+
+		private void btnSkipStart_Click(object sender, EventArgs e)
+		{
+			displayUntil = 0;
+			refill();
+		}
+
+		private void btnSkipEnd_Click(object sender, EventArgs e)
+		{
+			displayUntil = log.Count;
+			refill();
+		}
+
+		private void btnStepB_Click(object sender, EventArgs e)
+		{
+			if (displayUntil > 0)
+				displayUntil--;
+			refill();
+		}
+
+		private void btnStepF_Click(object sender, EventArgs e)
+		{
+			if (displayUntil < log.Count)
+				displayUntil++;
+			refill();
 		}
 	}
 }
