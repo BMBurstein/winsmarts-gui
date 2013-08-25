@@ -1,4 +1,6 @@
-﻿namespace Logger
+﻿using System;
+
+namespace Logger
 {
 	public enum TaskStates
 	{
@@ -27,5 +29,27 @@
 		public string name { get; set; }
 		public uint tid { get; set; }
 		public TaskStates state { get; set; }
+	}
+
+	public class LogEntry : IComparable<LogEntry>
+	{
+		public LogMsg msg { get; set; }
+		public uint num { get; set; }
+		public string[] props { get; set; }
+
+		public int CompareTo(LogEntry other)
+		{
+			return num.CompareTo(other.num);
+		}
+	}
+
+	public static class MyExtensions
+	{
+		public static byte[] ToByteArray(this string str)
+		{
+			byte[] bytes = new byte[str.Length * sizeof(char)];
+			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+			return bytes;
+		}
 	}
 }
