@@ -91,54 +91,5 @@ namespace Logger
 				disp.BringToFront();
 			}
 		}
-
-		
-		/*
-		private void Show_tabs_CheckedChanged(object sender, EventArgs e)
-		{
-			if (Hide_tabs.Checked)
-			{
-				if (this.TabSplitter == null)
-					CreateTabSplitter();
-
-				this.tabViews.Visible = false;
-				this.TabSplitter.Visible = true;
-				this.WindowSplitter.Panel2.Controls.Add(this.TabSplitter);
-				this.TabSplitter.SplitterDistance = WindowSplitter.Width / 2;
-				this.TabSplitter.Panel1.Controls.Add(this.lsvTasks);
-				this.TabSplitter.Panel2.Controls.Add(this.ganttChart);
-			}
-			else
-			{
-				this.TabSplitter.Visible = false;
-				this.tabViews.Visible = true;
-				this.WindowSplitter.Panel2.Controls.Add(this.tabViews);
-				this.tabTaskList.Controls.Add(this.lsvTasks);
-				this.tabGantt.Controls.Add(this.ganttChart);
-			}
-		}
-
-		private void CreateTabSplitter()
-		{
-			this.TabSplitter = new System.Windows.Forms.SplitContainer();
-			((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).BeginInit();
-			this.TabSplitter.SuspendLayout();
-			this.TabSplitter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.TabSplitter.Location = new System.Drawing.Point(370, 70);
-			this.TabSplitter.Name = "TabSplitter";
-			this.TabSplitter.Size = new System.Drawing.Size(150, 100);
-			this.TabSplitter.SplitterDistance = 121;
-			this.TabSplitter.TabIndex = 2;
-			this.TabSplitter.Visible = false;
-			this.TabSplitter.Dock = DockStyle.Fill;
-			((System.ComponentModel.ISupportInitialize)(this.TabSplitter)).EndInit();
-			this.TabSplitter.ResumeLayout(false);
-		}
-
-		private void StopView_CheckedChanged(object sender, EventArgs e)
-		{
-			if (!StopView.Checked)
-				udpc.BeginReceive(new AsyncCallback(ReceiveCallback), null);
-		}*/
 	}
 }
