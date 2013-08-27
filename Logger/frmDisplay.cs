@@ -19,12 +19,17 @@ namespace Logger
 		public List<LogEntry> log
 		{
 			get { return log_; }
-			set
+			private set
 			{
 				if (value == null)
 					log_ = new List<LogEntry>();
 				else
 					log_ = value;
+				lsvLog.Items.Clear();
+				foreach (var item in log)
+				{
+					addToLog(item);
+				}
 				refill();
 			}
 		}
@@ -50,6 +55,7 @@ namespace Logger
 				btnPause.Enabled = true;
 			}
 			btnPause_Click(btnPause, null);
+			tabsViews.SelectedIndex = 1;
 			log = newLog;
 		}
 
@@ -77,6 +83,7 @@ namespace Logger
 			if (buildLog)
 			{
 				log.Add(entry);
+				addToLog(entry);
 				if (btnPause.Checked)
 					return false;
 			}
@@ -98,7 +105,19 @@ namespace Logger
 				default:
 					return false;
 			}
+
 			return true;
+		}
+
+		private void addToLog(LogEntry entry)
+		{
+			ListViewItem item = new ListViewItem();
+			item.Text = entry.num.ToString();
+			item.SubItems.Add(entry.msg.ToString());
+			item.SubItems.Add(String.Join(" | ", entry.props));
+			lsvLog.Items.Add(item);
+			if (!btnPause.Checked)
+				item.EnsureVisible();
 		}
 
 		private void handleContextSwitch(LogEntry entry)
@@ -113,7 +132,7 @@ namespace Logger
 
 			ListViewItem item = new ListViewItem(entry.props.ToArray());
 			if (item.SubItems[2].Text == uint.MaxValue.ToString())
-				item.SubItems[2].Text = "MAX_INT";
+				item.SubItems[2].Text = "MIN";
 			item.SubItems.Add("Ready");
 			lsvTasks.Items.Add(item);
 
@@ -127,6 +146,7 @@ namespace Logger
 				if (item.SubItems[0].Text == entry.props[0])
 				{
 					item.SubItems[3].Text = entry.props[1];
+					break;
 				}
 			}
 		}

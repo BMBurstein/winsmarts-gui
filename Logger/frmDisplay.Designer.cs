@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDisplay));
-			this.tabViews = new System.Windows.Forms.TabControl();
+			this.tabsViews = new System.Windows.Forms.TabControl();
 			this.tabTaskList = new System.Windows.Forms.TabPage();
 			this.lsvTasks = new System.Windows.Forms.ListView();
 			this.tid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,25 +43,32 @@
 			this.btnStepB = new System.Windows.Forms.ToolStripButton();
 			this.btnSkipEnd = new System.Windows.Forms.ToolStripButton();
 			this.btnSkipStart = new System.Windows.Forms.ToolStripButton();
-			this.ganttChart = new Logger.Gantt();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tabViews.SuspendLayout();
+			this.tabLog = new System.Windows.Forms.TabPage();
+			this.lsvLog = new System.Windows.Forms.ListView();
+			this.colAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.ganttChart = new Logger.Gantt();
+			this.tabsViews.SuspendLayout();
 			this.tabTaskList.SuspendLayout();
 			this.tabGantt.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
+			this.tabLog.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// tabViews
+			// tabsViews
 			// 
-			this.tabViews.Controls.Add(this.tabTaskList);
-			this.tabViews.Controls.Add(this.tabGantt);
-			this.tabViews.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabViews.Location = new System.Drawing.Point(0, 25);
-			this.tabViews.Name = "tabViews";
-			this.tabViews.SelectedIndex = 0;
-			this.tabViews.Size = new System.Drawing.Size(715, 369);
-			this.tabViews.TabIndex = 2;
+			this.tabsViews.Controls.Add(this.tabTaskList);
+			this.tabsViews.Controls.Add(this.tabGantt);
+			this.tabsViews.Controls.Add(this.tabLog);
+			this.tabsViews.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabsViews.Location = new System.Drawing.Point(0, 25);
+			this.tabsViews.Name = "tabsViews";
+			this.tabsViews.SelectedIndex = 0;
+			this.tabsViews.Size = new System.Drawing.Size(715, 369);
+			this.tabsViews.TabIndex = 2;
 			// 
 			// tabTaskList
 			// 
@@ -98,6 +105,7 @@
 			// name
 			// 
 			this.name.Text = "Name";
+			this.name.Width = 136;
 			// 
 			// priority
 			// 
@@ -106,6 +114,7 @@
 			// state
 			// 
 			this.state.Text = "State";
+			this.state.Width = 239;
 			// 
 			// tabGantt
 			// 
@@ -191,16 +200,6 @@
 			this.btnSkipStart.ToolTipText = "Skip to start";
 			this.btnSkipStart.Click += new System.EventHandler(this.btnSkipStart_Click);
 			// 
-			// ganttChart
-			// 
-			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ganttChart.Location = new System.Drawing.Point(3, 3);
-			this.ganttChart.Name = "ganttChart";
-			this.ganttChart.RowHeight = 50;
-			this.ganttChart.Size = new System.Drawing.Size(701, 337);
-			this.ganttChart.TabIndex = 0;
-			this.ganttChart.YScale = 5;
-			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -211,20 +210,70 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
 			// 
+			// tabLog
+			// 
+			this.tabLog.Controls.Add(this.lsvLog);
+			this.tabLog.Location = new System.Drawing.Point(4, 22);
+			this.tabLog.Name = "tabLog";
+			this.tabLog.Padding = new System.Windows.Forms.Padding(3);
+			this.tabLog.Size = new System.Drawing.Size(707, 343);
+			this.tabLog.TabIndex = 2;
+			this.tabLog.Text = "Full log";
+			this.tabLog.UseVisualStyleBackColor = true;
+			// 
+			// lsvLog
+			// 
+			this.lsvLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colOrder,
+            this.colAction,
+            this.colData});
+			this.lsvLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lsvLog.Location = new System.Drawing.Point(3, 3);
+			this.lsvLog.Name = "lsvLog";
+			this.lsvLog.Size = new System.Drawing.Size(701, 337);
+			this.lsvLog.TabIndex = 0;
+			this.lsvLog.UseCompatibleStateImageBehavior = false;
+			this.lsvLog.View = System.Windows.Forms.View.Details;
+			// 
+			// colAction
+			// 
+			this.colAction.Text = "Action";
+			this.colAction.Width = 159;
+			// 
+			// colOrder
+			// 
+			this.colOrder.Text = "Order";
+			// 
+			// colData
+			// 
+			this.colData.Text = "Data";
+			this.colData.Width = 317;
+			// 
+			// ganttChart
+			// 
+			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ganttChart.Location = new System.Drawing.Point(3, 3);
+			this.ganttChart.Name = "ganttChart";
+			this.ganttChart.RowHeight = 50;
+			this.ganttChart.Size = new System.Drawing.Size(701, 337);
+			this.ganttChart.TabIndex = 0;
+			this.ganttChart.YScale = 5;
+			// 
 			// frmDisplay
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(715, 394);
-			this.Controls.Add(this.tabViews);
+			this.Controls.Add(this.tabsViews);
 			this.Controls.Add(this.toolStrip1);
 			this.Name = "frmDisplay";
 			this.Text = "frmDisplay";
-			this.tabViews.ResumeLayout(false);
+			this.tabsViews.ResumeLayout(false);
 			this.tabTaskList.ResumeLayout(false);
 			this.tabGantt.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			this.tabLog.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -232,7 +281,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.TabControl tabViews;
+		private System.Windows.Forms.TabControl tabsViews;
 		private System.Windows.Forms.TabPage tabTaskList;
 		private System.Windows.Forms.ListView lsvTasks;
 		private System.Windows.Forms.ColumnHeader tid;
@@ -249,5 +298,10 @@
 		private System.Windows.Forms.ToolStripButton btnSkipEnd;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.TabPage tabLog;
+		private System.Windows.Forms.ListView lsvLog;
+		private System.Windows.Forms.ColumnHeader colOrder;
+		private System.Windows.Forms.ColumnHeader colAction;
+		private System.Windows.Forms.ColumnHeader colData;
 	}
 }
