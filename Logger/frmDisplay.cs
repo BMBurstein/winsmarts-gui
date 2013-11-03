@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Net.Sockets;
+using System.Net;
 
 namespace Logger
 {
@@ -14,6 +16,8 @@ namespace Logger
 		List<Task> tasks = new List<Task>();
 		int displayUntil;
 		bool activeMode;
+		UdpClient udpc;
+
 
 		private List<LogEntry> log_;
 		public List<LogEntry> log
@@ -38,6 +42,12 @@ namespace Logger
 		{
 			InitializeComponent();
 			activeMode = active;
+			if (activeMode)
+			{
+				udpc = new UdpClient();
+				udpc.Connect("localhost", 44558);
+//				udpc.Client.ReceiveTimeout = 5000;
+			}
 			Clear(log);
 		}
 
@@ -151,8 +161,34 @@ namespace Logger
 			}
 		}
 
+		private static readonly byte[] pauseMsg  = new byte[] { (byte)DEBUG_COMMANDS.PAUSE };
+		private static readonly byte[] resumeMsg = new byte[] { (byte)DEBUG_COMMANDS.CONTINUE };
+
 		private void btnPause_Click(object sender, EventArgs e)
 		{
+			if (activeMode && e != null)
+			{
+				IPEndPoint ipep = null;
+				byte[] ret;
+
+				if(btnPause.Checked)
+					udpc.Send(pauseMsg, pauseMsg.Length);
+				else
+					udpc.Send(resumeMsg, pauseMsg.Length);
+				try
+				{
+					ret = udpc.Receive(ref ipep);
+					if (ret[0] != 1)
+						throw new Exception("Error processing request");
+				}
+				catch (Exception ex)
+				{
+					btnPause.Checked = !btnPause.Checked;
+					MessageBox.Show(ex.Message);
+					return;
+				}
+			}
+
 			btnSkipStart.Enabled =
 				btnStepB.Enabled =
 				btnStepF.Enabled =
