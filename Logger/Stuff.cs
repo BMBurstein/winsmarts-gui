@@ -52,4 +52,10 @@ namespace Logger
 			return bytes;
 		}
 	}
+
+	public enum DEBUG_COMMANDS
+	{
+		PAUSE,
+		CONTINUE,
+	};
 }
