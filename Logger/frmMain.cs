@@ -63,7 +63,7 @@ namespace Logger
 					WindowState = FormWindowState.Minimized;
 					break;
 				default:
-					entry.num = BitConverter.ToUInt32(s, 1);
+					entry.num = (uint)IPAddress.NetworkToHostOrder(BitConverter.ToInt32(s, 1));
 					entry.props = Encoding.ASCII.GetString(s, 5, s.Length - 5).Split(';');
 					activeDisplay.handleMsg(entry);
 					break;

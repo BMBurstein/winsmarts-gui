@@ -16,6 +16,7 @@ namespace Logger
 	public enum LogMsg
 	{
 		LOG_START,
+		LOG_END,
 		LOG_NEW_TASK,
 		LOG_CONTEXT_SWITCH,
 		LOG_CONTEXT_SWITCH_ON,
