@@ -37,7 +37,6 @@
 			this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabGantt = new System.Windows.Forms.TabPage();
-			this.ganttChart = new Logger.Gantt();
 			this.tabLog = new System.Windows.Forms.TabPage();
 			this.lsvLog = new System.Windows.Forms.ListView();
 			this.colOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -52,6 +51,7 @@
 			this.btnSkipEnd = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnStepRun = new System.Windows.Forms.ToolStripButton();
+			this.ganttChart = new Logger.Gantt();
 			this.tabsViews.SuspendLayout();
 			this.tabTaskList.SuspendLayout();
 			this.tabGantt.SuspendLayout();
@@ -128,16 +128,6 @@
 			this.tabGantt.Text = "Gantt Chart";
 			this.tabGantt.UseVisualStyleBackColor = true;
 			// 
-			// ganttChart
-			// 
-			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ganttChart.Location = new System.Drawing.Point(3, 3);
-			this.ganttChart.Name = "ganttChart";
-			this.ganttChart.RowHeight = 50;
-			this.ganttChart.Size = new System.Drawing.Size(701, 337);
-			this.ganttChart.TabIndex = 0;
-			this.ganttChart.YScale = 5;
-			// 
 			// tabLog
 			// 
 			this.tabLog.Controls.Add(this.lsvLog);
@@ -165,6 +155,7 @@
 			this.lsvLog.TabIndex = 0;
 			this.lsvLog.UseCompatibleStateImageBehavior = false;
 			this.lsvLog.View = System.Windows.Forms.View.Details;
+			this.lsvLog.ItemActivate += new System.EventHandler(this.lsvLog_ItemActivate);
 			// 
 			// colOrder
 			// 
@@ -274,6 +265,16 @@
 			this.btnStepRun.Text = "|>";
 			this.btnStepRun.ToolTipText = "Step run";
 			this.btnStepRun.Click += new System.EventHandler(this.btnStepRun_Click);
+			// 
+			// ganttChart
+			// 
+			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ganttChart.Location = new System.Drawing.Point(3, 3);
+			this.ganttChart.Name = "ganttChart";
+			this.ganttChart.RowHeight = 50;
+			this.ganttChart.Size = new System.Drawing.Size(701, 337);
+			this.ganttChart.TabIndex = 0;
+			this.ganttChart.YScale = 5;
 			// 
 			// frmDisplay
 			// 
