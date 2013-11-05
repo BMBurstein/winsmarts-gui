@@ -173,7 +173,12 @@ namespace Logger
 
 		private void handleDeclareTask(LogEntry entry)
 		{
-			Task task = new Task() { tid = uint.Parse(entry.props[0]), name = entry.props[1], priority = uint.Parse(entry.props[2]), state = TaskStates.READY };
+			Task task = new Task() {
+				tid = uint.Parse(entry.props[0]),
+				name = entry.props[1],
+				priority = uint.Parse(entry.props[2]),
+				state = TaskStates.READY
+			};
 			tasks.Add(task);
 
 			ListViewItem item = new ListViewItem(entry.props.ToArray());
