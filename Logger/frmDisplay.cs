@@ -34,7 +34,7 @@ namespace Logger
 				{
 					addToLog(item);
 				}
-				refresh();
+				refreshAllViews();
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace Logger
 			log = newLog;
 		}
 
-		private void refresh(ROUND round = ROUND.ROUND_UP)
+		private void refreshAllViews(ROUND round = ROUND.ROUND_UP)
 		{
 			ganttChart.Clear();
 			lsvTasks.Items.Clear();
@@ -232,27 +232,27 @@ namespace Logger
 		private void btnSkipStart_Click(object sender, EventArgs e)
 		{
 			displayUntil = 0;
-			refresh();
+			refreshAllViews();
 		}
 
 		private void btnSkipEnd_Click(object sender, EventArgs e)
 		{
 			displayUntil = log.Count;
-			refresh();
+			refreshAllViews();
 		}
 
 		private void btnStepB_Click(object sender, EventArgs e)
 		{
 			//if (displayUntil > 0)
 				displayUntil--;
-			refresh(ROUND.ROUND_DOWN);
+			refreshAllViews(ROUND.ROUND_DOWN);
 		}
 
 		private void btnStepF_Click(object sender, EventArgs e)
 		{
 			//if (displayUntil < log.Count)
 				displayUntil++;
-			refresh();
+			refreshAllViews();
 		}
 
 		private void btnStepRun_Click(object sender, EventArgs e)
@@ -278,6 +278,12 @@ namespace Logger
 				return false;
 			}
 			return true;
+		}
+
+		private void lsvLog_ItemActivate(object sender, EventArgs e)
+		{
+			displayUntil = lsvLog.SelectedIndices[0] + 1;
+			refreshAllViews(ROUND.DONT_ROUND);
 		}
 
 		private enum ROUND
