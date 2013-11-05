@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows.Forms;
+using System.Reflection;
 
 namespace Logger
 {
@@ -51,11 +53,18 @@ namespace Logger
 			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
 			return bytes;
 		}
+
+		public static void DoubleBuffered(this Control control, bool enable)
+		{
+			var doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+			doubleBufferPropertyInfo.SetValue(control, enable, null);
+		}
 	}
 
 	public enum DEBUG_COMMANDS
 	{
 		PAUSE,
 		CONTINUE,
+		GET_ALL,
 	};
 }

@@ -37,25 +37,25 @@
 			this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabGantt = new System.Windows.Forms.TabPage();
-			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.btnPause = new System.Windows.Forms.ToolStripButton();
-			this.btnStepF = new System.Windows.Forms.ToolStripButton();
-			this.btnStepB = new System.Windows.Forms.ToolStripButton();
-			this.btnSkipEnd = new System.Windows.Forms.ToolStripButton();
-			this.btnSkipStart = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tabLog = new System.Windows.Forms.TabPage();
 			this.lsvLog = new System.Windows.Forms.ListView();
-			this.colAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.btnPause = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.btnSkipStart = new System.Windows.Forms.ToolStripButton();
+			this.btnStepB = new System.Windows.Forms.ToolStripButton();
+			this.btnStepF = new System.Windows.Forms.ToolStripButton();
+			this.btnSkipEnd = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ganttChart = new Logger.Gantt();
 			this.tabsViews.SuspendLayout();
 			this.tabTaskList.SuspendLayout();
 			this.tabGantt.SuspendLayout();
-			this.toolStrip1.SuspendLayout();
 			this.tabLog.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabsViews
@@ -127,6 +127,48 @@
 			this.tabGantt.Text = "Gantt Chart";
 			this.tabGantt.UseVisualStyleBackColor = true;
 			// 
+			// tabLog
+			// 
+			this.tabLog.Controls.Add(this.lsvLog);
+			this.tabLog.Location = new System.Drawing.Point(4, 22);
+			this.tabLog.Name = "tabLog";
+			this.tabLog.Padding = new System.Windows.Forms.Padding(3);
+			this.tabLog.Size = new System.Drawing.Size(707, 343);
+			this.tabLog.TabIndex = 2;
+			this.tabLog.Text = "Full log";
+			this.tabLog.UseVisualStyleBackColor = true;
+			// 
+			// lsvLog
+			// 
+			this.lsvLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colOrder,
+            this.colAction,
+            this.colData});
+			this.lsvLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lsvLog.FullRowSelect = true;
+			this.lsvLog.HideSelection = false;
+			this.lsvLog.Location = new System.Drawing.Point(3, 3);
+			this.lsvLog.MultiSelect = false;
+			this.lsvLog.Name = "lsvLog";
+			this.lsvLog.Size = new System.Drawing.Size(701, 337);
+			this.lsvLog.TabIndex = 0;
+			this.lsvLog.UseCompatibleStateImageBehavior = false;
+			this.lsvLog.View = System.Windows.Forms.View.Details;
+			// 
+			// colOrder
+			// 
+			this.colOrder.Text = "Order";
+			// 
+			// colAction
+			// 
+			this.colAction.Text = "Action";
+			this.colAction.Width = 159;
+			// 
+			// colData
+			// 
+			this.colData.Text = "Data";
+			this.colData.Width = 317;
+			// 
 			// toolStrip1
 			// 
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -156,38 +198,10 @@
 			this.btnPause.ToolTipText = "Pause";
 			this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
 			// 
-			// btnStepF
+			// toolStripSeparator1
 			// 
-			this.btnStepF.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.btnStepF.Image = ((System.Drawing.Image)(resources.GetObject("btnStepF.Image")));
-			this.btnStepF.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnStepF.Name = "btnStepF";
-			this.btnStepF.Size = new System.Drawing.Size(23, 22);
-			this.btnStepF.Text = ">";
-			this.btnStepF.ToolTipText = "Step foreward";
-			this.btnStepF.Click += new System.EventHandler(this.btnStepF_Click);
-			// 
-			// btnStepB
-			// 
-			this.btnStepB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.btnStepB.Image = ((System.Drawing.Image)(resources.GetObject("btnStepB.Image")));
-			this.btnStepB.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnStepB.Name = "btnStepB";
-			this.btnStepB.Size = new System.Drawing.Size(23, 22);
-			this.btnStepB.Text = "<";
-			this.btnStepB.ToolTipText = "Step Back";
-			this.btnStepB.Click += new System.EventHandler(this.btnStepB_Click);
-			// 
-			// btnSkipEnd
-			// 
-			this.btnSkipEnd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.btnSkipEnd.Image = ((System.Drawing.Image)(resources.GetObject("btnSkipEnd.Image")));
-			this.btnSkipEnd.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnSkipEnd.Name = "btnSkipEnd";
-			this.btnSkipEnd.Size = new System.Drawing.Size(27, 22);
-			this.btnSkipEnd.Text = ">>";
-			this.btnSkipEnd.ToolTipText = "Skip to end";
-			this.btnSkipEnd.Click += new System.EventHandler(this.btnSkipEnd_Click);
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
 			// 
 			// btnSkipStart
 			// 
@@ -200,54 +214,43 @@
 			this.btnSkipStart.ToolTipText = "Skip to start";
 			this.btnSkipStart.Click += new System.EventHandler(this.btnSkipStart_Click);
 			// 
-			// toolStripSeparator1
+			// btnStepB
 			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			this.btnStepB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnStepB.Image = ((System.Drawing.Image)(resources.GetObject("btnStepB.Image")));
+			this.btnStepB.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnStepB.Name = "btnStepB";
+			this.btnStepB.Size = new System.Drawing.Size(23, 22);
+			this.btnStepB.Text = "<";
+			this.btnStepB.ToolTipText = "Step Back";
+			this.btnStepB.Click += new System.EventHandler(this.btnStepB_Click);
+			// 
+			// btnStepF
+			// 
+			this.btnStepF.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnStepF.Image = ((System.Drawing.Image)(resources.GetObject("btnStepF.Image")));
+			this.btnStepF.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnStepF.Name = "btnStepF";
+			this.btnStepF.Size = new System.Drawing.Size(23, 22);
+			this.btnStepF.Text = ">";
+			this.btnStepF.ToolTipText = "Step foreward";
+			this.btnStepF.Click += new System.EventHandler(this.btnStepF_Click);
+			// 
+			// btnSkipEnd
+			// 
+			this.btnSkipEnd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnSkipEnd.Image = ((System.Drawing.Image)(resources.GetObject("btnSkipEnd.Image")));
+			this.btnSkipEnd.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnSkipEnd.Name = "btnSkipEnd";
+			this.btnSkipEnd.Size = new System.Drawing.Size(27, 22);
+			this.btnSkipEnd.Text = ">>";
+			this.btnSkipEnd.ToolTipText = "Skip to end";
+			this.btnSkipEnd.Click += new System.EventHandler(this.btnSkipEnd_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-			// 
-			// tabLog
-			// 
-			this.tabLog.Controls.Add(this.lsvLog);
-			this.tabLog.Location = new System.Drawing.Point(4, 22);
-			this.tabLog.Name = "tabLog";
-			this.tabLog.Padding = new System.Windows.Forms.Padding(3);
-			this.tabLog.Size = new System.Drawing.Size(707, 343);
-			this.tabLog.TabIndex = 2;
-			this.tabLog.Text = "Full log";
-			this.tabLog.UseVisualStyleBackColor = true;
-			// 
-			// lsvLog
-			// 
-			this.lsvLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colOrder,
-            this.colAction,
-            this.colData});
-			this.lsvLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lsvLog.Location = new System.Drawing.Point(3, 3);
-			this.lsvLog.Name = "lsvLog";
-			this.lsvLog.Size = new System.Drawing.Size(701, 337);
-			this.lsvLog.TabIndex = 0;
-			this.lsvLog.UseCompatibleStateImageBehavior = false;
-			this.lsvLog.View = System.Windows.Forms.View.Details;
-			// 
-			// colAction
-			// 
-			this.colAction.Text = "Action";
-			this.colAction.Width = 159;
-			// 
-			// colOrder
-			// 
-			this.colOrder.Text = "Order";
-			// 
-			// colData
-			// 
-			this.colData.Text = "Data";
-			this.colData.Width = 317;
 			// 
 			// ganttChart
 			// 
@@ -271,9 +274,9 @@
 			this.tabsViews.ResumeLayout(false);
 			this.tabTaskList.ResumeLayout(false);
 			this.tabGantt.ResumeLayout(false);
+			this.tabLog.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			this.tabLog.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
