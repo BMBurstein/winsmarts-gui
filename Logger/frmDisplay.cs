@@ -14,7 +14,7 @@ namespace Logger
 	public partial class frmDisplay : Form
 	{
 		List<Task> tasks = new List<Task>();
-		int displayUntil;
+		int displayUntil = 0;
 		bool activeMode;
 		UdpClient udpc;
 
@@ -34,20 +34,23 @@ namespace Logger
 				{
 					addToLog(item);
 				}
-				refill();
+				refresh();
 			}
 		}
 
 		public frmDisplay(List<LogEntry> log = null, bool active = true)
 		{
 			InitializeComponent();
+			lsvLog.DoubleBuffered(true);
+
 			activeMode = active;
 			if (activeMode)
 			{
 				udpc = new UdpClient();
 				udpc.Connect("localhost", 44558);
-//				udpc.Client.ReceiveTimeout = 5000;
+				udpc.Client.ReceiveTimeout = 5000;
 			}
+
 			Clear(log);
 		}
 
@@ -64,39 +67,72 @@ namespace Logger
 				btnPause.Checked = false;
 				btnPause.Enabled = true;
 			}
-			btnPause_Click(btnPause, null);
+			setToolbarState();
 			tabsViews.SelectedIndex = 1;
 			log = newLog;
 		}
 
-		internal void refill()
+		private void refresh(ROUND round = ROUND.ROUND_UP)
 		{
 			ganttChart.Clear();
 			lsvTasks.Items.Clear();
 
-			if (!btnPause.Checked)
+			if (!btnPause.Checked || displayUntil > log.Count)
 				displayUntil = log.Count;
-			if (displayUntil == 0)
+			else if (displayUntil < 0)
+				displayUntil = 0;
+
+			if (log.Count == 0)
 				return;
 
-			displayUntil--;
+			int displayed = -1;
 			for (int i = 0; i < displayUntil; i++)
 			{
-				handleMsg(log[i], false);
+				if (updateDisplay(i))
+					displayed = i;
 			}
-			while (displayUntil < log.Count && !handleMsg(log[displayUntil++], false))
-				;
+
+			if (round == ROUND.ROUND_UP && displayUntil != displayed + 1)
+			{
+				while (displayUntil < log.Count && !updateDisplay(displayUntil))
+				{
+					displayUntil++;
+				}
+				displayUntil++;
+			}
+			else if (round == ROUND.ROUND_DOWN)
+			{
+				displayUntil = displayed + 1;
+			}
+
+			for (int i = displayUntil; i < lsvLog.Items.Count; i++)
+			{
+				lsvLog.Items[i].BackColor = Color.Transparent;
+			}
+
+			if (displayUntil > 0)
+				lsvLog.EnsureVisible(displayUntil - 1);
+			else
+				lsvLog.EnsureVisible(0);
 		}
 
-		internal bool handleMsg(LogEntry entry, bool buildLog = true)
+		internal void handleMsg(LogEntry entry)
 		{
-			if (buildLog)
+			log.Add(entry);
+			int i = addToLog(entry);
+			if (!btnPause.Checked)
 			{
-				log.Add(entry);
-				addToLog(entry);
-				if (btnPause.Checked)
-					return false;
+				updateDisplay(i);
+				lsvLog.EnsureVisible(i);
+				displayUntil = i + 1;
 			}
+		}
+
+		private bool updateDisplay(int index)
+		{
+			LogEntry entry = log[index];
+
+			lsvLog.Items[index].BackColor = Color.LightGreen;
 
 			switch (entry.msg)
 			{
@@ -119,15 +155,15 @@ namespace Logger
 			return true;
 		}
 
-		private void addToLog(LogEntry entry)
+		private int addToLog(LogEntry entry)
 		{
 			ListViewItem item = new ListViewItem();
 			item.Text = entry.num.ToString();
 			item.SubItems.Add(entry.msg.ToString());
 			item.SubItems.Add(String.Join(" | ", entry.props));
 			lsvLog.Items.Add(item);
-			if (!btnPause.Checked)
-				item.EnsureVisible();
+
+			return item.Index;
 		}
 
 		private void handleContextSwitch(LogEntry entry)
@@ -166,29 +202,31 @@ namespace Logger
 
 		private void btnPause_Click(object sender, EventArgs e)
 		{
-			if (activeMode && e != null)
-			{
-				IPEndPoint ipep = null;
-				byte[] ret;
+			IPEndPoint ipep = null;
+			byte[] ret;
 
-				if(btnPause.Checked)
+			try
+			{
+				if (btnPause.Checked)
 					udpc.Send(pauseMsg, pauseMsg.Length);
 				else
 					udpc.Send(resumeMsg, pauseMsg.Length);
-				try
-				{
-					ret = udpc.Receive(ref ipep);
-					if (ret[0] != 1)
-						throw new Exception("Error processing request");
-				}
-				catch (Exception ex)
-				{
-					btnPause.Checked = !btnPause.Checked;
-					MessageBox.Show(ex.Message);
-					return;
-				}
+				ret = udpc.Receive(ref ipep);
+				if (ret[0] != 1)
+					throw new Exception("Error processing request");
+			}
+			catch (Exception ex)
+			{
+				btnPause.Checked = !btnPause.Checked;
+				MessageBox.Show(ex.Message);
+				return;
 			}
 
+			setToolbarState();
+		}
+
+		private void setToolbarState()
+		{
 			btnSkipStart.Enabled =
 				btnStepB.Enabled =
 				btnStepF.Enabled =
@@ -198,27 +236,35 @@ namespace Logger
 		private void btnSkipStart_Click(object sender, EventArgs e)
 		{
 			displayUntil = 0;
-			refill();
+			refresh();
 		}
 
 		private void btnSkipEnd_Click(object sender, EventArgs e)
 		{
 			displayUntil = log.Count;
-			refill();
+			refresh();
 		}
 
 		private void btnStepB_Click(object sender, EventArgs e)
 		{
-			if (displayUntil > 0)
+			//if (displayUntil > 0)
 				displayUntil--;
-			refill();
+			refresh(ROUND.ROUND_DOWN);
 		}
 
 		private void btnStepF_Click(object sender, EventArgs e)
 		{
-			if (displayUntil < log.Count)
+			//if (displayUntil < log.Count)
 				displayUntil++;
-			refill();
+			refresh();
+		}
+
+
+		private enum ROUND
+		{
+			ROUND_UP,
+			ROUND_DOWN,
+			DONT_ROUND,
 		}
 	}
 }

@@ -33,12 +33,12 @@ namespace Logger
 			var rcv = udpc.EndReceive(ar, ref ipep);
 			this.Invoke((MethodInvoker)(delegate
 			{
-				doStuff(Encoding.ASCII.GetString(rcv));
+				doStuff(rcv);
 			}));
 			udpc.BeginReceive(new AsyncCallback(ReceiveCallback), null);
 		}
 
-		private void doStuff(string s)
+		private void doStuff(byte[] s)
 		{
 			LogEntry entry = new LogEntry();
 
@@ -55,15 +55,16 @@ namespace Logger
 					{
 						activeDisplay.Clear();
 					}
-					activeDisplay.Show();
-					activeDisplay.BringToFront();
 					allLogs.Add(activeDisplay.log);
 					lstLogs.Items.Add("Log #" + allLogs.Count);
 					activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
+					activeDisplay.Show();
+					activeDisplay.BringToFront();
+					WindowState = FormWindowState.Minimized;
 					break;
 				default:
-					entry.num = BitConverter.ToUInt32(s.ToByteArray(), 1);
-					entry.props = s.Substring(5).Split(';');
+					entry.num = BitConverter.ToUInt32(s, 1);
+					entry.props = Encoding.ASCII.GetString(s, 5, s.Length - 5).Split(';');
 					activeDisplay.handleMsg(entry);
 					break;
 			}
