@@ -202,32 +202,22 @@ namespace Logger
 			}
 		}
 
-		private static readonly byte[] pauseMsg  = new byte[] { (byte)DEBUG_COMMANDS.PAUSE };
+		private static readonly byte[] pauseMsg = new byte[] { (byte)DEBUG_COMMANDS.PAUSE };
 		private static readonly byte[] resumeMsg = new byte[] { (byte)DEBUG_COMMANDS.CONTINUE };
+		private static readonly byte[] stepMsg = new byte[] { (byte)DEBUG_COMMANDS.STEP };
 
 		private void btnPause_Click(object sender, EventArgs e)
 		{
-			IPEndPoint ipep = null;
-			byte[] ret;
+			bool ret;
+			if (btnPause.Checked)
+				ret = sendCommand(pauseMsg);
+			else
+				ret = sendCommand(resumeMsg);
 
-			try
-			{
-				if (btnPause.Checked)
-					udpc.Send(pauseMsg, pauseMsg.Length);
-				else
-					udpc.Send(resumeMsg, pauseMsg.Length);
-				ret = udpc.Receive(ref ipep);
-				if (ret[0] != 1)
-					throw new Exception("Error processing request");
-			}
-			catch (Exception ex)
-			{
+			if (!ret)
 				btnPause.Checked = !btnPause.Checked;
-				MessageBox.Show(ex.Message);
-				return;
-			}
-
-			setToolbarState();
+			else
+				setToolbarState();
 		}
 
 		private void setToolbarState()
@@ -235,7 +225,8 @@ namespace Logger
 			btnSkipStart.Enabled =
 				btnStepB.Enabled =
 				btnStepF.Enabled =
-				btnSkipEnd.Enabled = btnPause.Checked;
+				btnSkipEnd.Enabled =
+				btnStepRun.Enabled = btnPause.Checked;
 		}
 
 		private void btnSkipStart_Click(object sender, EventArgs e)
@@ -264,6 +255,30 @@ namespace Logger
 			refresh();
 		}
 
+		private void btnStepRun_Click(object sender, EventArgs e)
+		{
+			sendCommand(stepMsg);
+		}
+
+		private bool sendCommand(byte[] command)
+		{
+			try
+			{
+				IPEndPoint ipep = null;
+				byte[] ret;
+
+				udpc.Send(command, command.Length);
+				ret = udpc.Receive(ref ipep);
+				if (ret[0] != 1)
+					throw new Exception("Error processing request");
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+				return false;
+			}
+			return true;
+		}
 
 		private enum ROUND
 		{
