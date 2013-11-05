@@ -67,5 +67,6 @@ namespace Logger
 		PAUSE,
 		CONTINUE,
 		GET_ALL,
+		STEP,
 	};
 }

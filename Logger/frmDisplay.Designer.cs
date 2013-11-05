@@ -37,6 +37,7 @@
 			this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabGantt = new System.Windows.Forms.TabPage();
+			this.ganttChart = new Logger.Gantt();
 			this.tabLog = new System.Windows.Forms.TabPage();
 			this.lsvLog = new System.Windows.Forms.ListView();
 			this.colOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -50,7 +51,7 @@
 			this.btnStepF = new System.Windows.Forms.ToolStripButton();
 			this.btnSkipEnd = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.ganttChart = new Logger.Gantt();
+			this.btnStepRun = new System.Windows.Forms.ToolStripButton();
 			this.tabsViews.SuspendLayout();
 			this.tabTaskList.SuspendLayout();
 			this.tabGantt.SuspendLayout();
@@ -127,6 +128,16 @@
 			this.tabGantt.Text = "Gantt Chart";
 			this.tabGantt.UseVisualStyleBackColor = true;
 			// 
+			// ganttChart
+			// 
+			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ganttChart.Location = new System.Drawing.Point(3, 3);
+			this.ganttChart.Name = "ganttChart";
+			this.ganttChart.RowHeight = 50;
+			this.ganttChart.Size = new System.Drawing.Size(701, 337);
+			this.ganttChart.TabIndex = 0;
+			this.ganttChart.YScale = 5;
+			// 
 			// tabLog
 			// 
 			this.tabLog.Controls.Add(this.lsvLog);
@@ -179,7 +190,8 @@
             this.btnStepB,
             this.btnStepF,
             this.btnSkipEnd,
-            this.toolStripSeparator2});
+            this.toolStripSeparator2,
+            this.btnStepRun});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(715, 25);
@@ -252,15 +264,16 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
 			// 
-			// ganttChart
+			// btnStepRun
 			// 
-			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ganttChart.Location = new System.Drawing.Point(3, 3);
-			this.ganttChart.Name = "ganttChart";
-			this.ganttChart.RowHeight = 50;
-			this.ganttChart.Size = new System.Drawing.Size(701, 337);
-			this.ganttChart.TabIndex = 0;
-			this.ganttChart.YScale = 5;
+			this.btnStepRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnStepRun.Image = ((System.Drawing.Image)(resources.GetObject("btnStepRun.Image")));
+			this.btnStepRun.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnStepRun.Name = "btnStepRun";
+			this.btnStepRun.Size = new System.Drawing.Size(23, 22);
+			this.btnStepRun.Text = "|>";
+			this.btnStepRun.ToolTipText = "Step run";
+			this.btnStepRun.Click += new System.EventHandler(this.btnStepRun_Click);
 			// 
 			// frmDisplay
 			// 
@@ -306,5 +319,6 @@
 		private System.Windows.Forms.ColumnHeader colOrder;
 		private System.Windows.Forms.ColumnHeader colAction;
 		private System.Windows.Forms.ColumnHeader colData;
+		private System.Windows.Forms.ToolStripButton btnStepRun;
 	}
 }
