@@ -217,7 +217,11 @@ namespace Logger
 			if (!ret)
 				btnPause.Checked = !btnPause.Checked;
 			else
+			{
 				setToolbarState();
+				if (!btnPause.Checked)
+					refreshAllViews();
+			}
 		}
 
 		private void setToolbarState()
@@ -243,15 +247,13 @@ namespace Logger
 
 		private void btnStepB_Click(object sender, EventArgs e)
 		{
-			//if (displayUntil > 0)
-				displayUntil--;
+			displayUntil--;
 			refreshAllViews(ROUND.ROUND_DOWN);
 		}
 
 		private void btnStepF_Click(object sender, EventArgs e)
 		{
-			//if (displayUntil < log.Count)
-				displayUntil++;
+			displayUntil++;
 			refreshAllViews();
 		}
 
