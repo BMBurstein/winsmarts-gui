@@ -56,7 +56,6 @@
 
 		#endregion
 
-		private System.Windows.Forms.SplitContainer TabSplitter;
 		private System.Windows.Forms.ListBox lstLogs;
 	}
 }
