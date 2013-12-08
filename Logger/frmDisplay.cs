@@ -168,7 +168,7 @@ namespace Logger
 
 		private void handleContextSwitch(LogEntry entry)
 		{
-			ganttChart.addSlice(uint.Parse(entry.props[0]));
+			//ganttChart.changeState(uint.Parse(entry.props[0]), TaskStates.RUNNING);
 		}
 
 		private void handleDeclareTask(LogEntry entry)
@@ -192,11 +192,13 @@ namespace Logger
 
 		private void handleStatusChanged(LogEntry entry)
 		{
+			TaskStates state = (TaskStates)int.Parse(entry.props[1]);
 			foreach (ListViewItem item in lsvTasks.Items)
 			{
 				if (item.SubItems[0].Text == entry.props[0])
 				{
-					item.SubItems[3].Text = entry.props[1];
+					item.SubItems[3].Text = state.ToString();
+					ganttChart.changeState(uint.Parse(entry.props[0]), state, state == TaskStates.RUNNING);
 					break;
 				}
 			}

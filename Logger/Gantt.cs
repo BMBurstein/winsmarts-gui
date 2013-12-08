@@ -11,12 +11,14 @@ namespace Logger
 {
 	public partial class Gantt : UserControl
 	{
-		private List<GanttSpan> spans = new List<GanttSpan>();
+		//private List<GanttSpan> spans = new List<GanttSpan>();
 		private Dictionary<uint, GanttTask> tasks = new Dictionary<uint, GanttTask>();
 		private uint sliceCount = 0;
 		private Panel chart = new BufferedPanel() { Dock = DockStyle.Fill, AutoScroll = true };
 		private int scale;
 		private int rowHeight;
+
+		public Dictionary<TaskStates, Brush> colors = new Dictionary<TaskStates, Brush>();
 
 		public int RowHeight
 		{
@@ -51,7 +53,6 @@ namespace Logger
 
 		public void Clear()
 		{
-			spans.Clear();
 			tasks.Clear();
 			splt.Panel1.Controls.Clear();
 			splt.Panel1.Controls.Add(new Label() { Height = (int)(rowHeight * 0.5), Dock = DockStyle.Bottom });
@@ -75,17 +76,14 @@ namespace Logger
 			Invalidate();
 		}
 
-		public void addSlice(uint index)
+		public void changeState(uint index, TaskStates state, bool nextTick)
 		{
-			if (spans.Count > 0 && index == spans.Last().task.index)
+			if (tasks[index].spans.Count == 0 || state != (tasks[index].spans.Last().type))
 			{
-				spans.Last().duration++;
+				tasks[index].spans.Add(new GanttSpan() { type = state, start = sliceCount });
 			}
-			else
-			{
-				spans.Add(new GanttSpan() { task = tasks[index], start = sliceCount, duration = 1 });
-			}
-			sliceCount++;
+			if(nextTick)
+				sliceCount++;
 			chart.Invalidate();
 		}
 
@@ -98,6 +96,12 @@ namespace Logger
 			chart.Scroll += Chart_Scroll;
 			RowHeight = 50;
 			YScale = 5;
+
+			colors[TaskStates.NOT_ACTIVE] = Brushes.Transparent;
+			colors[TaskStates.READY] = Brushes.LightGray;
+			colors[TaskStates.RUNNING] = Brushes.LightGreen;
+			colors[TaskStates.SLEEPING] = Brushes.Navy;
+			colors[TaskStates.SUSPENDED] = Brushes.Gray;
 		}
 
 		private void Chart_Scroll(object sender, ScrollEventArgs e)
@@ -115,9 +119,15 @@ namespace Logger
 			chart.AutoScrollMinSize = new Size((int)sliceCount * scale, (int)(rowHeight * (tasks.Count + 0.5)));
 
 			g.TranslateTransform(chart.AutoScrollPosition.X, chart.AutoScrollPosition.Y);
-			foreach (var span in spans)
+
+			foreach (var task in tasks.Values)
 			{
-				g.FillRectangle(span.task.brush, span.start * scale, RowHeight * span.task.order + RowHeight / 4, span.duration * scale, RowHeight / 2);
+				for (int i=0; i<task.spans.Count-1; i++)
+				{
+					GanttSpan span = task.spans[i];
+					g.FillRectangle(colors[span.type] ?? Brushes.Transparent, span.start * scale, RowHeight * task.order + RowHeight / 4, (task.spans[i + 1].start - span.start) * scale, RowHeight / 2);
+				}
+				g.FillRectangle(colors[task.spans.Last().type] ?? Brushes.Transparent, task.spans.Last().start * scale, RowHeight * task.order + RowHeight / 4, (sliceCount - task.spans.Last().start) * scale, RowHeight / 2);
 			}
 
 			if (autoScroll)
@@ -126,30 +136,23 @@ namespace Logger
 
 		private class GanttTask
 		{
-			private static readonly Random rand = new Random();
 			public uint index { get; set; }
 			public string name { get; set; }
-			public Brush brush { get; set; }
 			public int order { get; set; }
+			public List<GanttSpan> spans = new List<GanttSpan>();
 			public GanttTask(uint index, string name, int order)
 			{
 				this.index = index;
 				this.name = name;
 				this.order = order;
-				brush = new SolidBrush(Color.FromArgb(rand.Next(32, 192), rand.Next(32, 192), rand.Next(32, 192)));
+				this.spans.Add(new GanttSpan() { type = TaskStates.READY, start = 0 });
 			}
 		}
 
-		private class GanttSpan : IComparable<GanttSpan>
+		private class GanttSpan
 		{
-			public GanttTask task { get; set; }
+			public TaskStates type { get; set; }
 			public float start { get; set; }
-			public float duration { get; set; }
-
-			public int CompareTo(GanttSpan other)
-			{
-				return start.CompareTo(other.start);
-			}
 		}
 
 		class BufferedPanel : Panel

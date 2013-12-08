@@ -10,7 +10,8 @@ namespace Logger
 		NOT_ACTIVE,
 		SUSPENDED,
 		SLEEPING,
-		UNKNOWN
+		RUNNING,
+		UNKNOWN,
 	}
 
 	public enum LogMsg
