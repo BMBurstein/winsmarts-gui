@@ -42,6 +42,8 @@ namespace Logger
 		{
 			InitializeComponent();
 			lsvLog.DoubleBuffered(true);
+            lsvTasks_Resize(lsvTasks);
+            lsvLog_Resize(lsvLog);
 
 			activeMode = active;
 			if (activeMode)
@@ -296,5 +298,29 @@ namespace Logger
 			ROUND_DOWN,
 			DONT_ROUND,
 		}
+
+        private void lsvTasks_Resize(object sender, EventArgs e)
+        {
+            lsvTasks_Resize((ListView)sender);
+        }
+
+        private void lsvLog_Resize(object sender, EventArgs e)
+        {
+            lsvLog_Resize((ListView)sender);
+        }
+
+        private void lsvTasks_Resize(ListView lsvTasks)
+        {
+            int x = (lsvTasks.Width - lsvTasks.Columns[0].Width) / 7 == 0 ? 1 : (lsvTasks.Width - lsvTasks.Columns[0].Width) / 7;
+            lsvTasks.Columns[1].Width = x * 2;
+            lsvTasks.Columns[2].Width = x;
+            lsvTasks.Columns[3].Width = x * 4 - 10;
+        }
+        private void lsvLog_Resize(ListView lsvTasks)
+        {
+            int x = (lsvLog.Width - lsvLog.Columns[0].Width) / 3 == 0 ? 1 : (lsvLog.Width - lsvLog.Columns[0].Width) / 3;
+            lsvLog.Columns[1].Width = x;
+            lsvLog.Columns[2].Width = x * 2 - 22;
+        }
 	}
 }
