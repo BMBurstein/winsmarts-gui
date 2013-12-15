@@ -312,13 +312,6 @@ namespace Logger
 			lsvTasks.Columns[3].Width = x * 4 - 10;
 		}
 
-		private enum ROUND
-		{
-			ROUND_UP,
-			ROUND_DOWN,
-			DONT_ROUND,
-		}
-
 		private void lsvTasks_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lsvTasks.SelectedItems.Count > 0)
@@ -327,6 +320,13 @@ namespace Logger
 
 				propGrid.SelectedObject = new DictionaryPropertyGridAdapter(task.props);
 			}
+		}
+
+		private enum ROUND
+		{
+			ROUND_UP,
+			ROUND_DOWN,
+			DONT_ROUND,
 		}
 	}
 }
