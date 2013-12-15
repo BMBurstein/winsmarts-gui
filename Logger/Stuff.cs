@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Logger
 {
@@ -26,6 +29,11 @@ namespace Logger
 		LOG_DEADLOCK,
 
 		LOG_TASK_STATUS_CHANGE,
+		LOG_TASK_PROP_SET,
+	};
+
+	public enum TaskProps {
+		UNKOWN_PROP,
 	};
 
 	public class Task
@@ -33,6 +41,7 @@ namespace Logger
 		public uint priority { get; set; }
 		public string name { get; set; }
 		public uint tid { get; set; }
+		public Dictionary<TaskProps, object> props { get; set; }
 		public TaskStates state { get; set; }
 	}
 
@@ -71,4 +80,135 @@ namespace Logger
 		GET_ALL,
 		STEP,
 	};
+
+	//These two clases were taken from http://www.differentpla.net/content/2005/02/using-propertygrid-with-dictionary
+	class DictionaryPropertyGridAdapter : ICustomTypeDescriptor
+	{
+		IDictionary _dictionary;
+
+		public DictionaryPropertyGridAdapter(IDictionary d)
+		{
+			_dictionary = d;
+		}
+
+		public string GetComponentName()
+		{
+			return TypeDescriptor.GetComponentName(this, true);
+		}
+
+		public EventDescriptor GetDefaultEvent()
+		{
+			return TypeDescriptor.GetDefaultEvent(this, true);
+		}
+
+		public string GetClassName()
+		{
+			return TypeDescriptor.GetClassName(this, true);
+		}
+
+		public EventDescriptorCollection GetEvents(Attribute[] attributes)
+		{
+			return TypeDescriptor.GetEvents(this, attributes, true);
+		}
+
+		EventDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetEvents()
+		{
+			return TypeDescriptor.GetEvents(this, true);
+		}
+
+		public TypeConverter GetConverter()
+		{
+			return TypeDescriptor.GetConverter(this, true);
+		}
+
+		public object GetPropertyOwner(PropertyDescriptor pd)
+		{
+			return _dictionary;
+		}
+
+		public AttributeCollection GetAttributes()
+		{
+			return TypeDescriptor.GetAttributes(this, true);
+		}
+
+		public object GetEditor(Type editorBaseType)
+		{
+			return TypeDescriptor.GetEditor(this, editorBaseType, true);
+		}
+
+		public PropertyDescriptor GetDefaultProperty()
+		{
+			return null;
+		}
+
+		PropertyDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetProperties()
+		{
+			return ((ICustomTypeDescriptor)this).GetProperties(new Attribute[0]);
+		}
+
+		public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			ArrayList properties = new ArrayList();
+			foreach (DictionaryEntry e in _dictionary)
+			{
+				properties.Add(new DictionaryPropertyDescriptor(_dictionary, e.Key));
+			}
+
+			PropertyDescriptor[] props =
+				(PropertyDescriptor[])properties.ToArray(typeof(PropertyDescriptor));
+
+			return new PropertyDescriptorCollection(props);
+		}
+	}
+	class DictionaryPropertyDescriptor : PropertyDescriptor
+	{
+		IDictionary _dictionary;
+		object _key;
+
+		internal DictionaryPropertyDescriptor(IDictionary d, object key)
+			: base(key.ToString(), null)
+		{
+			_dictionary = d;
+			_key = key;
+		}
+
+		public override Type PropertyType
+		{
+			get { return _dictionary[_key].GetType(); }
+		}
+
+		public override void SetValue(object component, object value)
+		{
+			_dictionary[_key] = value;
+		}
+
+		public override object GetValue(object component)
+		{
+			return _dictionary[_key];
+		}
+
+		public override bool IsReadOnly
+		{
+			get { return false; }
+		}
+
+		public override Type ComponentType
+		{
+			get { return null; }
+		}
+
+		public override bool CanResetValue(object component)
+		{
+			return false;
+		}
+
+		public override void ResetValue(object component)
+		{
+		}
+
+		public override bool ShouldSerializeValue(object component)
+		{
+			return false;
+		}
+	}
 }
