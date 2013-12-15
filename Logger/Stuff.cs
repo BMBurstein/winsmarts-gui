@@ -34,6 +34,8 @@ namespace Logger
 
 	public enum TaskProps {
 		UNKOWN_PROP,
+		COUNTING_SEM_WAIT,
+		COUNTING_SEM_ACQ,
 	};
 
 	public class Task
