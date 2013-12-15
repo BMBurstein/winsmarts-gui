@@ -164,15 +164,23 @@ namespace Logger
 		}
 
 		private int addToLog(LogEntry entry)
-		{
-			ListViewItem item = new ListViewItem();
-			item.Text = entry.num.ToString();
-			item.SubItems.Add(entry.msg.ToString());
-			item.SubItems.Add(String.Join(" | ", entry.props));
-			lsvLog.Items.Add(item);
+        {
+            ListViewItem item = new ListViewItem();
+            item.Text = entry.num.ToString();
+            item.SubItems.Add(entry.msg.ToString());
 
-			return item.Index;
-		}
+            if (entry.msg == LogMsg.LOG_TASK_STATUS_CHANGE)
+            {
+                string[] statusChangeDetials = new string[] { entry.props[0], ((LogMsg)int.Parse(entry.props[1])).ToString().Substring(4) };
+                item.SubItems.Add(String.Join(" | ", statusChangeDetials));
+            }
+            else
+                item.SubItems.Add(String.Join(" | ", entry.props));
+
+            lsvLog.Items.Add(item);
+
+            return item.Index;
+        }
 
 		private void handleContextSwitch(LogEntry entry)
 		{
