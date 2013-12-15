@@ -171,7 +171,7 @@ namespace Logger
 
             if (entry.msg == LogMsg.LOG_TASK_STATUS_CHANGE)
             {
-                string[] statusChangeDetials = new string[] { entry.props[0], ((LogMsg)int.Parse(entry.props[1])).ToString().Substring(4) };
+                string[] statusChangeDetials = new string[] { entry.props[0], ((TaskStates)int.Parse(entry.props[1])).ToString() };
                 item.SubItems.Add(String.Join(" | ", statusChangeDetials));
             }
             else
