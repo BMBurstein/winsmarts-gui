@@ -13,7 +13,7 @@ namespace Logger
 {
 	public partial class frmDisplay : Form
 	{
-		List<Task> tasks = new List<Task>();
+		Dictionary<uint, Task> tasks = new Dictionary<uint, Task>();
 		int displayUntil = 0;
 		bool activeMode;
 		UdpClient udpc;
@@ -42,8 +42,6 @@ namespace Logger
 		{
 			InitializeComponent();
 			lsvLog.DoubleBuffered(true);
-            lsvTasks_Resize(lsvTasks);
-            lsvLog_Resize(lsvLog);
 
 			activeMode = active;
 			if (activeMode)
@@ -147,6 +145,9 @@ namespace Logger
 				case LogMsg.LOG_TASK_STATUS_CHANGE:
 					handleStatusChanged(entry);
 					break;
+				case LogMsg.LOG_TASK_PROP_SET:
+					handlePropSet(entry);
+					break;
 				case LogMsg.LOG_CONTEXT_SWITCH_ON:
 				case LogMsg.LOG_CONTEXT_SWITCH_OFF:
 				case LogMsg.LOG_TIMER:
@@ -155,6 +156,11 @@ namespace Logger
 			}
 
 			return true;
+		}
+
+		private void handlePropSet(LogEntry entry)
+		{
+			tasks[uint.Parse(entry.props[0])].props[(TaskProps)int.Parse(entry.props[1])] = entry.props[2];
 		}
 
 		private int addToLog(LogEntry entry)
@@ -187,14 +193,16 @@ namespace Logger
 				tid = uint.Parse(entry.props[0]),
 				name = entry.props[1],
 				priority = uint.Parse(entry.props[2]),
-				state = TaskStates.READY
+				state = TaskStates.READY,
+				props = new Dictionary<TaskProps,object>()
 			};
-			tasks.Add(task);
+			tasks.Add(task.tid, task);
 
 			ListViewItem item = new ListViewItem(entry.props.ToArray());
 			if (item.SubItems[2].Text == uint.MaxValue.ToString())
 				item.SubItems[2].Text = "MIN";
 			item.SubItems.Add("Ready");
+			item.Tag = task;
 			lsvTasks.Items.Add(item);
 
 			ganttChart.addTask(task.tid, task.name);
@@ -300,6 +308,18 @@ namespace Logger
 			refreshAllViews(ROUND.DONT_ROUND);
 		}
 
+		private void tabsViews_Resize(object sender, EventArgs e)
+		{
+			int x = (lsvLog.Width - lsvLog.Columns[0].Width) / 3 == 0 ? 1 : (lsvLog.Width - lsvLog.Columns[0].Width) / 3;
+			lsvLog.Columns[1].Width = x;
+			lsvLog.Columns[2].Width = x * 2 - 22;
+
+			x = (lsvTasks.Width - lsvTasks.Columns[0].Width) / 7 == 0 ? 1 : (lsvTasks.Width - lsvTasks.Columns[0].Width) / 7;
+			lsvTasks.Columns[1].Width = x * 2;
+			lsvTasks.Columns[2].Width = x;
+			lsvTasks.Columns[3].Width = x * 4 - 10;
+		}
+
 		private enum ROUND
 		{
 			ROUND_UP,
@@ -307,28 +327,14 @@ namespace Logger
 			DONT_ROUND,
 		}
 
-        private void lsvTasks_Resize(object sender, EventArgs e)
-        {
-            lsvTasks_Resize((ListView)sender);
-        }
+		private void lsvTasks_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lsvTasks.SelectedItems.Count > 0)
+			{
+				Task task = (Task)lsvTasks.SelectedItems[0].Tag;
 
-        private void lsvLog_Resize(object sender, EventArgs e)
-        {
-            lsvLog_Resize((ListView)sender);
-        }
-
-        private void lsvTasks_Resize(ListView lsvTasks)
-        {
-            int x = (lsvTasks.Width - lsvTasks.Columns[0].Width) / 7 == 0 ? 1 : (lsvTasks.Width - lsvTasks.Columns[0].Width) / 7;
-            lsvTasks.Columns[1].Width = x * 2;
-            lsvTasks.Columns[2].Width = x;
-            lsvTasks.Columns[3].Width = x * 4 - 10;
-        }
-        private void lsvLog_Resize(ListView lsvTasks)
-        {
-            int x = (lsvLog.Width - lsvLog.Columns[0].Width) / 3 == 0 ? 1 : (lsvLog.Width - lsvLog.Columns[0].Width) / 3;
-            lsvLog.Columns[1].Width = x;
-            lsvLog.Columns[2].Width = x * 2 - 22;
-        }
+				propGrid.SelectedObject = new DictionaryPropertyGridAdapter(task.props);
+			}
+		}
 	}
 }
