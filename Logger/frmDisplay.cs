@@ -43,6 +43,8 @@ namespace Logger
 			InitializeComponent();
 			lsvLog.DoubleBuffered(true);
 
+            tabsViews_Resize(this, null);
+
 			activeMode = active;
 			if (activeMode)
 			{
