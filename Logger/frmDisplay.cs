@@ -13,6 +13,7 @@ namespace Logger
 {
 	public partial class frmDisplay : Form
 	{
+		static public frmDisplay activeDisplay;
 		Dictionary<uint, Task> tasks = new Dictionary<uint, Task>();
 		int displayUntil = 0;
 		bool activeMode;
@@ -148,6 +149,12 @@ namespace Logger
 				case LogMsg.LOG_TASK_PROP_SET:
 					handlePropSet(entry);
 					break;
+				case LogMsg.LOG_DEADLOCK:
+					handleEnd("DEADLOCK!", true);
+					break;
+				case LogMsg.LOG_END:
+					handleEnd("Done!", false);
+					break;
 				case LogMsg.LOG_CONTEXT_SWITCH_ON:
 				case LogMsg.LOG_CONTEXT_SWITCH_OFF:
 				case LogMsg.LOG_TIMER:
@@ -158,29 +165,39 @@ namespace Logger
 			return true;
 		}
 
+		private void handleEnd(string msg, bool error)
+		{
+			activeDisplay = null;
+			activeMode = false;
+			btnPause.Checked = true;
+			btnPause.Enabled = false;
+			setToolbarState();
+			MessageBox.Show("End of session", msg, MessageBoxButtons.OK, error ? MessageBoxIcon.Error : MessageBoxIcon.Information);
+		}
+
 		private void handlePropSet(LogEntry entry)
 		{
 			tasks[uint.Parse(entry.props[0])].props[(TaskProps)int.Parse(entry.props[1])] = entry.props[2];
 		}
 
 		private int addToLog(LogEntry entry)
-        {
-            ListViewItem item = new ListViewItem();
-            item.Text = entry.num.ToString();
-            item.SubItems.Add(entry.msg.ToString());
+		{
+			ListViewItem item = new ListViewItem();
+			item.Text = entry.num.ToString();
+			item.SubItems.Add(entry.msg.ToString());
 
-            if (entry.msg == LogMsg.LOG_TASK_STATUS_CHANGE)
-            {
-                string[] statusChangeDetials = new string[] { entry.props[0], ((LogMsg)int.Parse(entry.props[1])).ToString().Substring(4) };
-                item.SubItems.Add(String.Join(" | ", statusChangeDetials));
-            }
-            else
-                item.SubItems.Add(String.Join(" | ", entry.props));
+			if (entry.msg == LogMsg.LOG_TASK_STATUS_CHANGE)
+			{
+				string[] statusChangeDetials = new string[] { entry.props[0], ((LogMsg)int.Parse(entry.props[1])).ToString().Substring(4) };
+				item.SubItems.Add(String.Join(" | ", statusChangeDetials));
+			}
+			else
+				item.SubItems.Add(String.Join(" | ", entry.props));
 
-            lsvLog.Items.Add(item);
+			lsvLog.Items.Add(item);
 
-            return item.Index;
-        }
+			return item.Index;
+		}
 
 		private void handleContextSwitch(LogEntry entry)
 		{

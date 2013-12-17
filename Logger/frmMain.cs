@@ -14,7 +14,6 @@ namespace Logger
 	public partial class frmMain : Form
 	{
 		UdpClient udpc = new UdpClient(44557);
-		frmDisplay activeDisplay = new frmDisplay();
 		List<List<LogEntry>> allLogs = new List<List<LogEntry>>();
 
 		public frmMain()
@@ -47,25 +46,28 @@ namespace Logger
 			switch (entry.msg)
 			{
 				case LogMsg.LOG_START:
-					if (activeDisplay.IsDisposed)
+					if (frmDisplay.activeDisplay == null || frmDisplay.activeDisplay.IsDisposed)
 					{
-						activeDisplay = new frmDisplay();
+						frmDisplay.activeDisplay = new frmDisplay();
 					}
 					else
 					{
-						activeDisplay.Clear();
+						frmDisplay.activeDisplay.Clear();
 					}
-					allLogs.Add(activeDisplay.log);
+					allLogs.Add(frmDisplay.activeDisplay.log);
 					lstLogs.Items.Add("Log #" + allLogs.Count);
-					activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
-					activeDisplay.Show();
-					activeDisplay.BringToFront();
+					frmDisplay.activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
+					frmDisplay.activeDisplay.Show();
+					frmDisplay.activeDisplay.BringToFront();
 					WindowState = FormWindowState.Minimized;
 					goto default; //fallthrough
 				default:
-					entry.num = (uint)IPAddress.NetworkToHostOrder(BitConverter.ToInt32(s, 1));
-					entry.props = Encoding.ASCII.GetString(s, 5, s.Length - 5).Split(';');
-					activeDisplay.handleMsg(entry);
+					if (frmDisplay.activeDisplay != null)
+					{
+						entry.num = (uint)IPAddress.NetworkToHostOrder(BitConverter.ToInt32(s, 1));
+						entry.props = Encoding.ASCII.GetString(s, 5, s.Length - 5).Split(';');
+						frmDisplay.activeDisplay.handleMsg(entry);
+					}
 					break;
 			}
 		}
@@ -74,15 +76,15 @@ namespace Logger
 		{
 			if (lstLogs.SelectedIndex == lstLogs.Items.Count - 1)
 			{
-				if (activeDisplay.IsDisposed)
+				if (frmDisplay.activeDisplay.IsDisposed)
 				{
-					activeDisplay = new frmDisplay(allLogs.Last());
-					activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
+					frmDisplay.activeDisplay = new frmDisplay(allLogs.Last());
+					frmDisplay.activeDisplay.Text = "Log #" + allLogs.Count + " (active)";
 				}
-				activeDisplay.Show();
-				if (activeDisplay.WindowState == FormWindowState.Minimized)
-					activeDisplay.WindowState = FormWindowState.Normal;
-				activeDisplay.BringToFront();
+				frmDisplay.activeDisplay.Show();
+				if (frmDisplay.activeDisplay.WindowState == FormWindowState.Minimized)
+					frmDisplay.activeDisplay.WindowState = FormWindowState.Normal;
+				frmDisplay.activeDisplay.BringToFront();
 			}
 			else
 			{
