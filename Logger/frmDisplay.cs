@@ -157,6 +157,10 @@ namespace Logger
 				case LogMsg.LOG_END:
 					handleEnd("Done!", false);
 					break;
+				case LogMsg.LOG_TIME_OUT:
+					handleEnd("Time out!", false);
+					break;
+				case LogMsg.LOG_REDECLARE:
 				case LogMsg.LOG_CONTEXT_SWITCH_ON:
 				case LogMsg.LOG_CONTEXT_SWITCH_OFF:
 				case LogMsg.LOG_TIMER:
