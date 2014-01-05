@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
+using System.Collections.ObjectModel;
 
 namespace Logger
 {
@@ -20,26 +21,10 @@ namespace Logger
 		UdpClient udpc;
 
 
-		private List<LogEntry> log_;
-		public List<LogEntry> log
-		{
-			get { return log_; }
-			private set
-			{
-				if (value == null)
-					log_ = new List<LogEntry>();
-				else
-					log_ = value;
-				lsvLog.Items.Clear();
-				foreach (var item in log)
-				{
-					addToLog(item);
-				}
-				refreshAllViews();
-			}
-		}
+		private ObservableCollection<LogEntry> log_;
+		public ObservableCollection<LogEntry> log { get; private set; }
 
-		public frmDisplay(List<LogEntry> log = null, bool active = true)
+		public frmDisplay(ObservableCollection<LogEntry> log = null, bool active = true)
 		{
 			InitializeComponent();
 			lsvLog.DoubleBuffered(true);
@@ -54,7 +39,36 @@ namespace Logger
 				udpc.Client.ReceiveTimeout = 5000;
 			}
 
-			Clear(log);
+			if (log == null)
+				this.log = new ObservableCollection<LogEntry>();
+			else
+				this.log = log;
+			this.log.CollectionChanged += log_CollectionChanged;
+
+			Clear();
+		}
+
+		void log_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			switch (e.Action)
+			{
+				case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+					foreach (LogEntry item in e.NewItems)
+					{
+						handleMsg(item);
+					}
+					break;
+				case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+					lsvLog.Items.Clear();
+					foreach (LogEntry item in log)
+					{
+						addToLog(item);
+					}
+					refreshAllViews();
+					break;
+				default:
+					break;
+			}
 		}
 
 		public void Clear(List<LogEntry> newLog = null)
@@ -73,7 +87,7 @@ namespace Logger
 			setToolbarState();
 			tabsViews.SelectedIndex = 1;
 			tasks.Clear();
-			log = newLog;
+			refreshAllViews();
 		}
 
 		private void refreshAllViews(ROUND round = ROUND.ROUND_UP)
@@ -122,7 +136,6 @@ namespace Logger
 
 		internal void handleMsg(LogEntry entry)
 		{
-			log.Add(entry);
 			int i = addToLog(entry);
 			if (!btnPause.Checked)
 			{

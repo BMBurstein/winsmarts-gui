@@ -8,13 +8,14 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
+using System.Collections.ObjectModel;
 
 namespace Logger
 {
 	public partial class frmMain : Form
 	{
 		UdpClient udpc = new UdpClient(44557);
-		List<List<LogEntry>> allLogs = new List<List<LogEntry>>();
+		List<ObservableCollection<LogEntry>> allLogs = new List<ObservableCollection<LogEntry>>();
 
 		public frmMain()
 		{
@@ -66,7 +67,7 @@ namespace Logger
 					{
 						entry.num = (uint)IPAddress.NetworkToHostOrder(BitConverter.ToInt32(s, 1));
 						entry.props = Encoding.ASCII.GetString(s, 5, s.Length - 5).Split(';');
-						frmDisplay.activeDisplay.handleMsg(entry);
+						frmDisplay.activeDisplay.log.Add(entry);
 					}
 					break;
 			}
