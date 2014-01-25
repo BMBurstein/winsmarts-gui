@@ -20,8 +20,6 @@ namespace Logger
 		bool activeMode;
 		UdpClient udpc;
 
-
-		private ObservableCollection<LogEntry> log_;
 		public ObservableCollection<LogEntry> log { get; private set; }
 
 		public frmDisplay(ObservableCollection<LogEntry> log = null, bool active = true)
