@@ -83,6 +83,8 @@ namespace Logger
 		CONTINUE,
 		GET_ALL,
 		STEP,
+		SET_TASK,
+		SET_CS,
 	};
 
 	//These two clases were taken from http://www.differentpla.net/content/2005/02/using-propertygrid-with-dictionary

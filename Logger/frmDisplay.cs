@@ -51,7 +51,7 @@ namespace Logger
 			{
 				udpc = new UdpClient();
 				udpc.Connect("localhost", 44558);
-				udpc.Client.ReceiveTimeout = 5000;
+//				udpc.Client.ReceiveTimeout = 5000;
 			}
 
 			Clear(log);
@@ -80,6 +80,8 @@ namespace Logger
 		{
 			ganttChart.Clear();
 			lsvTasks.Items.Clear();
+			tasks.Clear();
+			btnSetTask.DropDownItems.Clear();
 
 			if (!btnPause.Checked || displayUntil > log.Count)
 				displayUntil = log.Count;
@@ -230,6 +232,8 @@ namespace Logger
 			lsvTasks.Items.Add(item);
 
 			ganttChart.addTask(task.tid, task.name);
+			var t = btnSetTask.DropDownItems.Add(task.name);
+			t.Tag = task;
 		}
 
 		private void handleStatusChanged(LogEntry entry)
@@ -274,7 +278,8 @@ namespace Logger
 				btnStepB.Enabled =
 				btnStepF.Enabled =
 				btnSkipEnd.Enabled =
-				btnStepRun.Enabled = btnPause.Checked;
+				btnStepRun.Enabled =
+				btnSetTask.Enabled = btnPause.Checked;
 		}
 
 		private void btnSkipStart_Click(object sender, EventArgs e)
@@ -359,6 +364,15 @@ namespace Logger
 			ROUND_UP,
 			ROUND_DOWN,
 			DONT_ROUND,
+		}
+
+		private void btnSetTask_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+			var tag = e.ClickedItem.Tag as Task;
+			List<byte> msg = new List<byte>(5);
+			msg.Add((byte)DEBUG_COMMANDS.SET_TASK);
+			msg.AddRange(BitConverter.GetBytes(tag.tid));
+			sendCommand(msg.ToArray());
 		}
 	}
 }
