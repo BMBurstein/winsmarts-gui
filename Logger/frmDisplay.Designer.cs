@@ -31,11 +31,13 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDisplay));
 			this.tabsViews = new System.Windows.Forms.TabControl();
 			this.tabTaskList = new System.Windows.Forms.TabPage();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.lsvTasks = new System.Windows.Forms.ListView();
 			this.tid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.propGrid = new System.Windows.Forms.PropertyGrid();
 			this.tabGantt = new System.Windows.Forms.TabPage();
 			this.ganttChart = new Logger.Gantt();
 			this.tabLog = new System.Windows.Forms.TabPage();
@@ -52,17 +54,17 @@
 			this.btnSkipEnd = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnStepRun = new System.Windows.Forms.ToolStripButton();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.propGrid = new System.Windows.Forms.PropertyGrid();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.btnSetTask = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tabsViews.SuspendLayout();
 			this.tabTaskList.SuspendLayout();
-			this.tabGantt.SuspendLayout();
-			this.tabLog.SuspendLayout();
-			this.toolStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			this.tabGantt.SuspendLayout();
+			this.tabLog.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabsViews
@@ -88,6 +90,24 @@
 			this.tabTaskList.TabIndex = 0;
 			this.tabTaskList.Text = "Task Manager";
 			this.tabTaskList.UseVisualStyleBackColor = true;
+			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+			this.splitContainer1.Name = "splitContainer1";
+			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			// 
+			// splitContainer1.Panel1
+			// 
+			this.splitContainer1.Panel1.Controls.Add(this.lsvTasks);
+			// 
+			// splitContainer1.Panel2
+			// 
+			this.splitContainer1.Panel2.Controls.Add(this.propGrid);
+			this.splitContainer1.Size = new System.Drawing.Size(701, 337);
+			this.splitContainer1.SplitterDistance = 236;
+			this.splitContainer1.TabIndex = 1;
 			// 
 			// lsvTasks
 			// 
@@ -125,6 +145,17 @@
 			// 
 			this.state.Text = "State";
 			this.state.Width = 239;
+			// 
+			// propGrid
+			// 
+			this.propGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.propGrid.HelpVisible = false;
+			this.propGrid.Location = new System.Drawing.Point(0, 0);
+			this.propGrid.Name = "propGrid";
+			this.propGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+			this.propGrid.Size = new System.Drawing.Size(701, 97);
+			this.propGrid.TabIndex = 0;
+			this.propGrid.ToolbarVisible = false;
 			// 
 			// tabGantt
 			// 
@@ -201,7 +232,9 @@
             this.btnStepF,
             this.btnSkipEnd,
             this.toolStripSeparator2,
-            this.btnStepRun});
+            this.btnStepRun,
+            this.toolStripSeparator3,
+            this.btnSetTask});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(715, 25);
@@ -285,34 +318,21 @@
 			this.btnStepRun.ToolTipText = "Step run";
 			this.btnStepRun.Click += new System.EventHandler(this.btnStepRun_Click);
 			// 
-			// splitContainer1
+			// toolStripSeparator3
 			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-			this.splitContainer1.Name = "splitContainer1";
-			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
 			// 
-			// splitContainer1.Panel1
+			// btnSetTask
 			// 
-			this.splitContainer1.Panel1.Controls.Add(this.lsvTasks);
-			// 
-			// splitContainer1.Panel2
-			// 
-			this.splitContainer1.Panel2.Controls.Add(this.propGrid);
-			this.splitContainer1.Size = new System.Drawing.Size(701, 337);
-			this.splitContainer1.SplitterDistance = 236;
-			this.splitContainer1.TabIndex = 1;
-			// 
-			// propGrid
-			// 
-			this.propGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.propGrid.HelpVisible = false;
-			this.propGrid.Location = new System.Drawing.Point(0, 0);
-			this.propGrid.Name = "propGrid";
-			this.propGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-			this.propGrid.Size = new System.Drawing.Size(701, 97);
-			this.propGrid.TabIndex = 0;
-			this.propGrid.ToolbarVisible = false;
+			this.btnSetTask.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnSetTask.Image = ((System.Drawing.Image)(resources.GetObject("btnSetTask.Image")));
+			this.btnSetTask.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnSetTask.Name = "btnSetTask";
+			this.btnSetTask.Size = new System.Drawing.Size(27, 22);
+			this.btnSetTask.Text = "T";
+			this.btnSetTask.ToolTipText = "Set Task";
+			this.btnSetTask.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.btnSetTask_DropDownItemClicked);
 			// 
 			// frmDisplay
 			// 
@@ -325,14 +345,14 @@
 			this.Text = "frmDisplay";
 			this.tabsViews.ResumeLayout(false);
 			this.tabTaskList.ResumeLayout(false);
-			this.tabGantt.ResumeLayout(false);
-			this.tabLog.ResumeLayout(false);
-			this.toolStrip1.ResumeLayout(false);
-			this.toolStrip1.PerformLayout();
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
+			this.tabGantt.ResumeLayout(false);
+			this.tabLog.ResumeLayout(false);
+			this.toolStrip1.ResumeLayout(false);
+			this.toolStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -365,5 +385,7 @@
 		private System.Windows.Forms.ToolStripButton btnStepRun;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.PropertyGrid propGrid;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripDropDownButton btnSetTask;
 	}
 }
