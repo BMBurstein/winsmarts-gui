@@ -51,7 +51,7 @@ namespace Logger
 			{
 				udpc = new UdpClient();
 				udpc.Connect("localhost", 44558);
-//				udpc.Client.ReceiveTimeout = 5000;
+				udpc.Client.ReceiveTimeout = 5000;
 			}
 
 			Clear(log);
@@ -73,6 +73,7 @@ namespace Logger
 			setToolbarState();
 			tabsViews.SelectedIndex = 1;
 			tasks.Clear();
+			locks.Clear();
 			log = newLog;
 		}
 
@@ -81,6 +82,7 @@ namespace Logger
 			ganttChart.Clear();
 			lsvTasks.Items.Clear();
 			tasks.Clear();
+			locks.Clear();
 			btnSetTask.DropDownItems.Clear();
 
 			if (!btnPause.Checked || displayUntil > log.Count)
@@ -163,6 +165,18 @@ namespace Logger
 				case LogMsg.LOG_TIME_OUT:
 					handleEnd("Time out!", false);
 					break;
+				case LogMsg.LOG_LOCK_WAIT:
+					handleLockWait(entry);
+					break;
+				case LogMsg.LOG_LOCK_ACQUIRE:
+					handleLockAcquire(entry);
+					break;
+				case LogMsg.LOG_LOCK_RELEASE:
+					handleLockRelease(entry);
+					break;
+				case LogMsg.LOG_LOCK_COUNT:
+					handleLockCount(entry);
+					break;
 				case LogMsg.LOG_REDECLARE:
 				case LogMsg.LOG_CONTEXT_SWITCH_ON:
 				case LogMsg.LOG_CONTEXT_SWITCH_OFF:
@@ -172,6 +186,78 @@ namespace Logger
 			}
 
 			return true;
+		}
+
+		class lockQueues
+		{
+			public HashSet<uint> holding = new HashSet<uint>();
+			public HashSet<uint> waiting = new HashSet<uint>();
+			public int count;
+		}
+		Dictionary<string, lockQueues> locks = new Dictionary<string, lockQueues>();
+		private void handleLockWait(LogEntry entry)
+		{
+			lockQueues q;
+			if (!locks.TryGetValue(entry.props[1], out q))
+				q = locks[entry.props[1]] = new lockQueues();
+			uint t = uint.Parse(entry.props[0]);
+			if(t !=  Task.NO_TASK)
+				q.waiting.Add(t);
+			updateLocks();
+		}
+		private void handleLockAcquire(LogEntry entry)
+		{
+			lockQueues q;
+			if (!locks.TryGetValue(entry.props[2], out q))
+				q = locks[entry.props[2]] = new lockQueues();
+			uint t = uint.Parse(entry.props[0]);
+			if (t != Task.NO_TASK)
+			{
+				q.waiting.Remove(t);
+				q.holding.Add(t);
+			}
+			q.count = int.Parse(entry.props[1]);
+			updateLocks();
+		}
+		private void handleLockRelease(LogEntry entry)
+		{
+			lockQueues q;
+			if (!locks.TryGetValue(entry.props[2], out q))
+				q = locks[entry.props[2]] = new lockQueues();
+			uint t = uint.Parse(entry.props[0]);
+			q.waiting.Remove(t);
+			q.holding.Remove(t);
+			q.count = int.Parse(entry.props[1]);
+			updateLocks();
+		}
+		private void handleLockCount(LogEntry entry)
+		{
+			lockQueues q;
+			if (!locks.TryGetValue(entry.props[1], out q))
+				q = locks[entry.props[1]] = new lockQueues();
+			q.count = int.Parse(entry.props[0]);
+		}
+
+		private void updateLocks()
+		{
+			lsvLocks.Items.Clear();
+			foreach (var item in locks)
+			{
+				var l = lsvLocks.Items.Add(item.Key);
+				l.SubItems.Add(item.Value.count.ToString());
+				List<string> s = new List<string>();
+				foreach (var t in item.Value.holding)
+				{
+					s.Add(tasks[t].name);
+				}
+				l.SubItems.Add(string.Join(",", s));
+				s.Clear();
+				foreach (var t in item.Value.waiting)
+				{
+					s.Add(tasks[t].name);
+				}
+				l.SubItems.Add(string.Join(",", s));
+			}
 		}
 
 		private void handleEnd(string msg, bool error)
