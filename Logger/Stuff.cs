@@ -32,6 +32,11 @@ namespace Logger
 
 		LOG_TASK_STATUS_CHANGE,
 		LOG_TASK_PROP_SET,
+
+		LOG_LOCK_ACQUIRE,
+		LOG_LOCK_RELEASE,
+		LOG_LOCK_WAIT,
+		LOG_LOCK_COUNT,
 	};
 
 	public enum TaskProps {
@@ -47,6 +52,8 @@ namespace Logger
 		public uint tid { get; set; }
 		public Dictionary<TaskProps, object> props { get; set; }
 		public TaskStates state { get; set; }
+
+		public const uint NO_TASK = uint.MaxValue;
 	}
 
 	public class LogEntry : IComparable<LogEntry>
