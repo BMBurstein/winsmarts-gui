@@ -163,7 +163,7 @@ namespace Logger
 					handleEnd("Done!", false);
 					break;
 				case LogMsg.LOG_TIME_OUT:
-					handleEnd("Time out!", false);
+					handleEnd("Missed deadline: " + tasks[uint.Parse(entry.props[0])].name + "!", true);
 					break;
 				case LogMsg.LOG_LOCK_WAIT:
 					handleLockWait(entry);
@@ -267,7 +267,7 @@ namespace Logger
 			btnPause.Checked = true;
 			btnPause.Enabled = false;
 			setToolbarState();
-			MessageBox.Show("End of session", msg, MessageBoxButtons.OK, error ? MessageBoxIcon.Error : MessageBoxIcon.Information);
+			MessageBox.Show(msg, "End of session", MessageBoxButtons.OK, error ? MessageBoxIcon.Error : MessageBoxIcon.Information);
 		}
 
 		private void handlePropSet(LogEntry entry)
