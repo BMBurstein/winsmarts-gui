@@ -31,14 +31,19 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDisplay));
 			this.tabsViews = new System.Windows.Forms.TabControl();
 			this.tabTaskList = new System.Windows.Forms.TabPage();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.lsvTasks = new System.Windows.Forms.ListView();
 			this.tid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.propGrid = new System.Windows.Forms.PropertyGrid();
 			this.tabGantt = new System.Windows.Forms.TabPage();
+			this.ganttChart = new Logger.Gantt();
+			this.tabLocks = new System.Windows.Forms.TabPage();
+			this.lsvLocks = new System.Windows.Forms.ListView();
+			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabLog = new System.Windows.Forms.TabPage();
 			this.lsvLog = new System.Windows.Forms.ListView();
 			this.colOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -55,23 +60,12 @@
 			this.btnStepRun = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnSetTask = new System.Windows.Forms.ToolStripDropDownButton();
-			this.ganttChart = new Logger.Gantt();
-			this.tabLocks = new System.Windows.Forms.TabPage();
-			this.lsvLocks = new System.Windows.Forms.ListView();
-			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabsViews.SuspendLayout();
 			this.tabTaskList.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-			this.splitContainer1.Panel1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
-			this.splitContainer1.SuspendLayout();
 			this.tabGantt.SuspendLayout();
+			this.tabLocks.SuspendLayout();
 			this.tabLog.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
-			this.tabLocks.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabsViews
@@ -90,7 +84,7 @@
 			// 
 			// tabTaskList
 			// 
-			this.tabTaskList.Controls.Add(this.splitContainer1);
+			this.tabTaskList.Controls.Add(this.lsvTasks);
 			this.tabTaskList.Location = new System.Drawing.Point(4, 22);
 			this.tabTaskList.Name = "tabTaskList";
 			this.tabTaskList.Padding = new System.Windows.Forms.Padding(3);
@@ -98,24 +92,6 @@
 			this.tabTaskList.TabIndex = 0;
 			this.tabTaskList.Text = "Task Manager";
 			this.tabTaskList.UseVisualStyleBackColor = true;
-			// 
-			// splitContainer1
-			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-			this.splitContainer1.Name = "splitContainer1";
-			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-			// 
-			// splitContainer1.Panel1
-			// 
-			this.splitContainer1.Panel1.Controls.Add(this.lsvTasks);
-			// 
-			// splitContainer1.Panel2
-			// 
-			this.splitContainer1.Panel2.Controls.Add(this.propGrid);
-			this.splitContainer1.Size = new System.Drawing.Size(701, 337);
-			this.splitContainer1.SplitterDistance = 236;
-			this.splitContainer1.TabIndex = 1;
 			// 
 			// lsvTasks
 			// 
@@ -126,14 +102,13 @@
             this.state});
 			this.lsvTasks.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lsvTasks.FullRowSelect = true;
-			this.lsvTasks.Location = new System.Drawing.Point(0, 0);
+			this.lsvTasks.Location = new System.Drawing.Point(3, 3);
 			this.lsvTasks.MultiSelect = false;
 			this.lsvTasks.Name = "lsvTasks";
-			this.lsvTasks.Size = new System.Drawing.Size(701, 236);
+			this.lsvTasks.Size = new System.Drawing.Size(701, 337);
 			this.lsvTasks.TabIndex = 0;
 			this.lsvTasks.UseCompatibleStateImageBehavior = false;
 			this.lsvTasks.View = System.Windows.Forms.View.Details;
-			this.lsvTasks.SelectedIndexChanged += new System.EventHandler(this.lsvTasks_SelectedIndexChanged);
 			// 
 			// tid
 			// 
@@ -154,17 +129,6 @@
 			this.state.Text = "State";
 			this.state.Width = 239;
 			// 
-			// propGrid
-			// 
-			this.propGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.propGrid.HelpVisible = false;
-			this.propGrid.Location = new System.Drawing.Point(0, 0);
-			this.propGrid.Name = "propGrid";
-			this.propGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-			this.propGrid.Size = new System.Drawing.Size(701, 97);
-			this.propGrid.TabIndex = 0;
-			this.propGrid.ToolbarVisible = false;
-			// 
 			// tabGantt
 			// 
 			this.tabGantt.Controls.Add(this.ganttChart);
@@ -175,6 +139,58 @@
 			this.tabGantt.TabIndex = 1;
 			this.tabGantt.Text = "Gantt Chart";
 			this.tabGantt.UseVisualStyleBackColor = true;
+			// 
+			// ganttChart
+			// 
+			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ganttChart.Location = new System.Drawing.Point(3, 3);
+			this.ganttChart.Name = "ganttChart";
+			this.ganttChart.RowHeight = 50;
+			this.ganttChart.Size = new System.Drawing.Size(701, 337);
+			this.ganttChart.TabIndex = 0;
+			this.ganttChart.YScale = 5;
+			// 
+			// tabLocks
+			// 
+			this.tabLocks.Controls.Add(this.lsvLocks);
+			this.tabLocks.Location = new System.Drawing.Point(4, 22);
+			this.tabLocks.Name = "tabLocks";
+			this.tabLocks.Padding = new System.Windows.Forms.Padding(3);
+			this.tabLocks.Size = new System.Drawing.Size(707, 343);
+			this.tabLocks.TabIndex = 3;
+			this.tabLocks.Text = "Locks";
+			this.tabLocks.UseVisualStyleBackColor = true;
+			// 
+			// lsvLocks
+			// 
+			this.lsvLocks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4});
+			this.lsvLocks.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lsvLocks.Location = new System.Drawing.Point(3, 3);
+			this.lsvLocks.Name = "lsvLocks";
+			this.lsvLocks.Size = new System.Drawing.Size(701, 337);
+			this.lsvLocks.TabIndex = 0;
+			this.lsvLocks.UseCompatibleStateImageBehavior = false;
+			this.lsvLocks.View = System.Windows.Forms.View.Details;
+			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Text = "Lock";
+			// 
+			// columnHeader2
+			// 
+			this.columnHeader2.Text = "Count";
+			// 
+			// columnHeader3
+			// 
+			this.columnHeader3.Text = "Holding";
+			// 
+			// columnHeader4
+			// 
+			this.columnHeader4.Text = "Waiting";
 			// 
 			// tabLog
 			// 
@@ -332,58 +348,6 @@
 			this.btnSetTask.ToolTipText = "Set Task";
 			this.btnSetTask.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.btnSetTask_DropDownItemClicked);
 			// 
-			// ganttChart
-			// 
-			this.ganttChart.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ganttChart.Location = new System.Drawing.Point(3, 3);
-			this.ganttChart.Name = "ganttChart";
-			this.ganttChart.RowHeight = 50;
-			this.ganttChart.Size = new System.Drawing.Size(701, 337);
-			this.ganttChart.TabIndex = 0;
-			this.ganttChart.YScale = 5;
-			// 
-			// tabLocks
-			// 
-			this.tabLocks.Controls.Add(this.lsvLocks);
-			this.tabLocks.Location = new System.Drawing.Point(4, 22);
-			this.tabLocks.Name = "tabLocks";
-			this.tabLocks.Padding = new System.Windows.Forms.Padding(3);
-			this.tabLocks.Size = new System.Drawing.Size(707, 343);
-			this.tabLocks.TabIndex = 3;
-			this.tabLocks.Text = "Locks";
-			this.tabLocks.UseVisualStyleBackColor = true;
-			// 
-			// lsvLocks
-			// 
-			this.lsvLocks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
-			this.lsvLocks.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lsvLocks.Location = new System.Drawing.Point(3, 3);
-			this.lsvLocks.Name = "lsvLocks";
-			this.lsvLocks.Size = new System.Drawing.Size(701, 337);
-			this.lsvLocks.TabIndex = 0;
-			this.lsvLocks.UseCompatibleStateImageBehavior = false;
-			this.lsvLocks.View = System.Windows.Forms.View.Details;
-			// 
-			// columnHeader1
-			// 
-			this.columnHeader1.Text = "Lock";
-			// 
-			// columnHeader2
-			// 
-			this.columnHeader2.Text = "Count";
-			// 
-			// columnHeader3
-			// 
-			this.columnHeader3.Text = "Holding";
-			// 
-			// columnHeader4
-			// 
-			this.columnHeader4.Text = "Waiting";
-			// 
 			// frmDisplay
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -395,15 +359,11 @@
 			this.Text = "frmDisplay";
 			this.tabsViews.ResumeLayout(false);
 			this.tabTaskList.ResumeLayout(false);
-			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-			this.splitContainer1.ResumeLayout(false);
 			this.tabGantt.ResumeLayout(false);
+			this.tabLocks.ResumeLayout(false);
 			this.tabLog.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			this.tabLocks.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -434,8 +394,6 @@
 		private System.Windows.Forms.ColumnHeader colAction;
 		private System.Windows.Forms.ColumnHeader colData;
 		private System.Windows.Forms.ToolStripButton btnStepRun;
-		private System.Windows.Forms.SplitContainer splitContainer1;
-		private System.Windows.Forms.PropertyGrid propGrid;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripDropDownButton btnSetTask;
 		private System.Windows.Forms.TabPage tabLocks;

@@ -31,7 +31,6 @@ namespace Logger
 		LOG_REDECLARE,
 
 		LOG_TASK_STATUS_CHANGE,
-		LOG_TASK_PROP_SET,
 
 		LOG_LOCK_ACQUIRE,
 		LOG_LOCK_RELEASE,
@@ -39,18 +38,11 @@ namespace Logger
 		LOG_LOCK_COUNT,
 	};
 
-	public enum TaskProps {
-		UNKOWN_PROP,
-		COUNTING_SEM_WAIT,
-		COUNTING_SEM_ACQ,
-	};
-
 	public class Task
 	{
 		public uint priority { get; set; }
 		public string name { get; set; }
 		public uint tid { get; set; }
-		public Dictionary<TaskProps, object> props { get; set; }
 		public TaskStates state { get; set; }
 
 		public const uint NO_TASK = uint.MaxValue;
