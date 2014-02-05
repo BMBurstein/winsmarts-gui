@@ -153,9 +153,6 @@ namespace Logger
 				case LogMsg.LOG_TASK_STATUS_CHANGE:
 					handleStatusChanged(entry);
 					break;
-				case LogMsg.LOG_TASK_PROP_SET:
-					handlePropSet(entry);
-					break;
 				case LogMsg.LOG_DEADLOCK:
 					handleEnd("DEADLOCK!", true);
 					break;
@@ -270,11 +267,6 @@ namespace Logger
 			MessageBox.Show(msg, "End of session", MessageBoxButtons.OK, error ? MessageBoxIcon.Error : MessageBoxIcon.Information);
 		}
 
-		private void handlePropSet(LogEntry entry)
-		{
-			tasks[uint.Parse(entry.props[0])].props[(TaskProps)int.Parse(entry.props[1])] = entry.props[2];
-		}
-
 		private int addToLog(LogEntry entry)
 		{
 			ListViewItem item = new ListViewItem();
@@ -306,7 +298,6 @@ namespace Logger
 				name = entry.props[1],
 				priority = uint.Parse(entry.props[2]),
 				state = TaskStates.READY,
-				props = new Dictionary<TaskProps,object>()
 			};
 			tasks.Add(task.tid, task);
 
@@ -433,16 +424,6 @@ namespace Logger
 			lsvTasks.Columns[1].Width = x * 2;
 			lsvTasks.Columns[2].Width = x;
 			lsvTasks.Columns[3].Width = x * 4 - 10;
-		}
-
-		private void lsvTasks_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (lsvTasks.SelectedItems.Count > 0)
-			{
-				Task task = (Task)lsvTasks.SelectedItems[0].Tag;
-
-				propGrid.SelectedObject = new DictionaryPropertyGridAdapter(task.props);
-			}
 		}
 
 		private enum ROUND
